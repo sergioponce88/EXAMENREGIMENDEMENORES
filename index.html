@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación Situacional: Turno de Comisaría (Leyes 26.827, 8933, 9322 y 9788)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0F172A;
+      --primary-accent: #1E3A8A;
+      --highlight: #2563EB;
+      --accent: #B45309;
+      --success: #15803D;
+      --error: #B91C1C;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border: #CBD5E1;
+      --text: #1E293B;
+      --text-muted: #64748B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
+      color: #FFFFFF;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: #94A3B8;
+      font-size: 0.88rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #F1F5F9;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input, .form-group select {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: var(--text);
+      background-color: #F8FAFC;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--highlight);
+      background-color: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--primary-accent);
+      color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.98rem;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #1e40af; }
+    .btn:disabled { background: #94A3B8; cursor: not-allowed; }
+
+    .q-step-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #E2E8F0;
+    }
+
+    .q-counter {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .security-tag {
+      background: #FEE2E2;
+      border: 1px solid #FCA5A5;
+      color: var(--error);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .opt-btn {
+      text-align: left;
+      padding: 14px;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .opt-btn:hover {
+      background: #EEF2F6;
+      border-color: var(--highlight);
+    }
+
+    .penalty-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.95);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      color: #FFFFFF;
+    }
+
+    .penalty-box {
+      background: #1E293B;
+      border: 2px solid #EF4444;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 520px;
+    }
+
+    .penalty-box h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #EF4444;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .score-banner {
+      text-align: center;
+      padding: 24px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .score-banner .score-num {
+      font-size: 3.2rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .feedback-item {
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 5px solid transparent;
+      font-size: 0.88rem;
+    }
+
+    .feedback-item.correct {
+      background-color: #F0FDF4;
+      border-left-color: var(--success);
+    }
+
+    .feedback-item.incorrect {
+      background-color: #FEF2F2;
+      border-left-color: var(--error);
+    }
+
+    .feedback-item .q-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .feedback-item .explanation {
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Evaluación Técnico-Operativa: Guardia de Comisaría</h1>
+    <p>Policía de Tucumán • Ley Nacional 26.827, Ley Provincial 8933, Ley 9322 y Ley 9788</p>
+    <div class="badge-bar">
+      <span class="badge">20 Casos Prácticos de Turno</span>
+      <span class="badge">Escala de 1 a 10</span>
+      <span class="badge">Monitoreo Anti-Fuga Activo</span>
+    </div>
+  </header>
+
+  <!-- PANTALLA 1: INGRESO DE DATOS -->
+  <div id="screenInit" class="card">
+    <h2>1. Identificación del Funcionario de Guardia</h2>
+    <form id="initForm">
+      <div class="form-grid" style="margin-bottom: 20px;">
+        <div class="form-group">
+          <label for="nombre">Nombre y Apellido *</label>
+          <input type="text" id="nombre" required placeholder="Ej: Sergio E. Ponce">
+        </div>
+        <div class="form-group">
+          <label for="jerarquia">Jerarquía / Escalafón *</label>
+          <select id="jerarquia" required>
+            <option value="">Seleccione jerarquía...</option>
+            <option value="Oficial Subayudante">Oficial Subayudante</option>
+            <option value="Oficial Ayudante">Oficial Ayudante</option>
+            <option value="Oficial Auxiliar">Oficial Auxiliar</option>
+            <option value="Oficial Principal">Oficial Principal</option>
+            <option value="Subcomisario">Subcomisario</option>
+            <option value="Comisario">Comisario</option>
+            <option value="Comisario Principal">Comisario Principal</option>
+            <option value="Comisario Inspector">Comisario Inspector</option>
+            <option value="Comisario Mayor">Comisario Mayor</option>
+            <option value="Comisario General">Comisario General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dni">N° Legajo / Credencial *</label>
+          <input type="text" id="dni" required placeholder="Ej: 32456789">
+        </div>
+        <div class="form-group">
+          <label for="destino">Destino / Unidad *</label>
+          <input type="text" id="destino" required placeholder="Ej: Comisaría Seccional 2da">
+        </div>
+      </div>
+
+      <div style="background: #F1F5F9; border-left: 4px solid var(--accent); padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 20px;">
+        <strong>Protocolo de Evaluación:</strong> Esta prueba se rinde bajo supervisión de foco. Al iniciar, se habilitará la pantalla completa. Si sale de la pestaña, minimiza la aplicación o abre otra ventana, la pregunta en curso quedará automáticamente <strong>anulada (0 puntos)</strong> sin posibilidad de recuperación.
+      </div>
+
+      <button type="submit" class="btn">Comenzar Evaluación en Pantalla Completa</button>
+    </form>
+  </div>
+
+  <!-- PANTALLA 2: EXAMEN PREGUNTA POR PREGUNTA -->
+  <div id="screenExam" class="card" style="display: none;">
+    <div class="q-step-bar">
+      <span class="q-counter" id="stepCounter">Pregunta 1 de 20</span>
+      <span class="security-tag">● Supervisión Activa</span>
+    </div>
+    <div class="q-text" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+  </div>
+
+  <!-- PANTALLA 3: RESULTADOS -->
+  <div id="screenResults" class="card" style="display: none;">
+    <h2>Resultado Final de la Evaluación</h2>
+    <div class="score-banner">
+      <h3 style="color: #1E3A8A; font-size: 1.1rem; margin-bottom: 6px;">Calificación del Funcionario</h3>
+      <div class="score-num" id="scoreDisplay">0.0</div>
+      <p id="scoreDetails" style="font-size: 0.9rem; color: #475569;"></p>
+    </div>
+    <div id="feedbackContainer"></div>
+  </div>
+</div>
+
+<!-- OVERLAY DE PENALIZACIÓN POR SALIDA -->
+<div id="penaltyOverlay" class="penalty-overlay">
+  <div class="penalty-box">
+    <h2>⚠️ INFRACCIÓN REGISTRADA</h2>
+    <p style="font-size: 0.92rem; color: #E2E8F0; margin-bottom: 16px;">
+      Se ha detectado una salida del navegador o pérdida de foco durante la resolución.
+      La pregunta activa ha sido calificada como <strong>INCORRECTA (0 PUNTOS)</strong>.
+    </p>
+    <button id="btnContinuePenalty" class="btn" style="background: #DC2626;">Continuar con el Examen</button>
+  </div>
+</div>
+
+<script>
+  // Tu endpoint web app de Google Apps Script integrado
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc1O1BVgePuNNbIAj4uhxGT2qwM_8cjjsJz7Yx6Ug8Qe2-rfikBW95uNWjUMNlz-T7uw/exec";
+
+  const questions = [
+    {
+      id: 1,
+      q: "02:30 AM. Llegan a la comisaría dos comisionados del Comité Provincial de Prevención de la Tortura (Ley 26.827) exhibiendo credenciales para inspeccionar los calabozos. El Oficial de Servicio les impide el paso manifestando que a esa hora no hay personal superior y que carecen de una orden judicial escrita firmada por un Juez de Garantías. El proceder del oficial es:",
+      options: [
+        "Correcto, pues ninguna persona civil puede ingresar a un área restringida policial sin autorización del fiscal o juez de turno.",
+        "Incorrecto e ilegítimo: la Ley 26.827 otorga facultades irrestrictas de inspección sorpresiva, a cualquier hora del día o de la noche, sin necesidad de aviso previo ni orden judicial.",
+        "Correcto, siempre que asiente en el Libro de Guardia que los comisionados deben regresar a las 08:00 AM.",
+        "Válido únicamente si los calabozos se encuentran con capacidad colmada."
+      ],
+      correct: 1,
+      exp: "La Ley 26.827 establece que los órganos del Mecanismo tienen acceso irrestricto, en cualquier momento, de día o de noche, a todos los lugares de privación de libertad, sin requerir orden judicial ni previo aviso."
+    },
+    {
+      id: 2,
+      q: "Durante una inspección a los calabozos, los inspectores solicitan entrevistarse en privado y a solas con tres detenidos. El oficial a cargo dispone que dos suboficiales permanezcan dentro de la celda 'por razones de seguridad funcional de los propios inspectores'. Esta disposición:",
+      options: [
+        "Es un deber ineludible de custodia de la integridad física de los visitantes.",
+        "Vulnera flagrantemente la Ley 26.827, que consagra el derecho absoluto a mantener entrevistas privadas y confidenciales sin testigos policiales ni escuchas.",
+        "Es válida solo si los detenidos están procesados por delitos contra las personas.",
+        "Se ajusta a la normativa siempre que los funcionarios policiales no tomen notas de lo hablado."
+      ],
+      correct: 1,
+      exp: "El art. 16 de la Ley 26.827 garantiza el desarrollo de entrevistas a solas y confidenciales con las personas privadas de su libertad, sin testigos ni personal de custodia a la vista o al alcance del oído."
+    },
+    {
+      id: 3,
+      q: "Ingresa un ciudadano aprehendido en flagrancia. Presenta un fuerte golpe en el pómulo derecho. El aprehensor manifiesta que 'se cayó al suelo durante la fuga'. El Oficial de Guardia, para agilizar el trámite ante la Unidad Fiscal, omite solicitar el reconocimiento médico legal de ingreso y lo aloja directamente. Esta omisión configura:",
+      options: [
+        "Una falta leve que se subsana cuando la defensa pública designe abogado.",
+        "Un quebrantamiento severo del deber de garante y de los protocolos de prevención de la tortura: todo ingreso debe contar con examen médico inmediato y constancia fidedigna en libro.",
+        "Un procedimiento admisible siempre que el aprehendido manifieste verbalmente sentirse bien.",
+        "Una práctica regular si el hecho ocurrió durante el fin de semana."
+      ],
+      correct: 1,
+      exp: "El control médico de ingreso y egreso obligatorio es la garantía esencial para constatar el estado psicofísico del detenido, deslindar responsabilidades y aplicar las directrices del Protocolo de Estambul."
+    },
+    {
+      id: 4,
+      q: "Los integrantes del Mecanismo Local de Prevención solicitan el Libro de Novedades de la Guardia, el Libro de Detenidos y el acceso a las cámaras de monitoreo del pasillo de celdas. El jefe de turno se niega argumentando que contienen 'información policial reservada y datos sensibles'. Dicha negativa:",
+      options: [
+        "Es jurídicamente correcta, pues solo el Fiscal de Instrucción puede desclasificar libros policiales.",
+        "Constituye una falta grave y posible delito de desobediencia e incumplimiento de deberes: la Ley 26.827 garantiza el acceso irrestricto a toda la documentación y registros del establecimiento.",
+        "Es correcta únicamente respecto a las grabaciones fílmicas, debiendo exhibir solo los libros foliados.",
+        "Está amparada por el secreto sumarial del Código Procesal Penal."
+      ],
+      correct: 1,
+      exp: "La Ley 26.827 obliga a exhibir toda la documentación vinculada al trato y condiciones de detención, libros de guardias, traslados, ingresos, pertenencias y registros fílmicos."
+    },
+    {
+      id: 5,
+      q: "Tras una queja colectiva de los alojados por el calor extremo en el calabozo, el personal de guardia decide cortar el suministro de agua corriente y retirar los colchones de las celdas durante 12 horas 'hasta que se calmen'. Esta medida es calificada procesalmente como:",
+      options: [
+        "Facultad disciplinaria legítima propia del régimen interno de la seccional.",
+        "Trato cruel, inhumano o degradante sancionado por la Ley 26.827 y los Tratados Internacionales de Derechos Humanos con jerarquía constitucional.",
+        "Una falta administrativa menor de competencia exclusiva de Asuntos Internos.",
+        "Medida cautelar preventiva de seguridad ante riesgo de motín."
+      ],
+      correct: 1,
+      exp: "La supresión de agua potable, alimentos o elementos básicos de descanso constituye trato cruel, inhumano y degradante; las sanciones colectivas corporales o de privación de derechos básicos están absolutamente prohibidas."
+    },
+    {
+      id: 6,
+      q: "Al realizar una requisa en el sector de alojamiento preventivo, el Oficial de Servicio ordena que todos los internos se desnuden por completo y realicen flexiones reiteradas en el patio frente a la guardia. Conforme los estándares vigentes de la Ley 26.827:",
+      options: [
+        "Es el método reglamentario habitual para descartar tenencia de elementos prohibidos.",
+        "Constituye una práctica degradante e ilícita; las requisas corporales deben respetar el pudor, estar justificadas individualmente y prohibir la desnudez total forzosa y las flexiones.",
+        "Es válida siempre que se realice en presencia de dos testigos de actuación.",
+        "Solo es ilegal si se realiza en presencia de internos de otro pabellón."
+      ],
+      correct: 1,
+      exp: "La desnudez forzosa y las flexiones de piernas son consideradas tratos vejatorios y degradantes por el sistema interamericano y la Ley 26.827. Las requisas deben ser proporcionadas y con tecnología no invasiva."
+    },
+    {
+      id: 7,
+      q: "Un detenido en la comisaría solicita comunicarse telefónicamente con un familiar para avisar de su aprehensión. El sargento de guardia le cobra dinero en efectivo por prestarle el teléfono celular corporativo y le advierte: 'En esta comisaría las llamadas no son gratis'. Esta conducta:",
+      options: [
+        "Es un acuerdo lícito entre partes para cubrir el costo operativo del servicio telefónico.",
+        "Constituye extorsión, violación de deberes y privación arbitraria del derecho de comunicación gratuita garantizado por la ley procesal y de prevención de la tortura.",
+        "Es una falta reglamentaria que no tiene relevancia judicial en el legajo fiscal.",
+        "Es admisible si el detenido no tiene defensor oficial designado."
+      ],
+      correct: 1,
+      exp: "El derecho a la comunicación inmediata y gratuita del detenido con familiares o defensa letrada es una garantía esencial; tarifarla o impedirla configura grave ilícito penal y funcional."
+    },
+    {
+      id: 8,
+      q: "04:00 AM. Un detenido que ingresó con signos de intoxicación alcohólica comienza a golpearse reiteradamente la cabeza contra los barrotes gritando incoherentemente. El oficial de guardia:",
+      options: [
+        "Debe ordenar que lo encadenen al barrote hasta que se duerma y se le pase el efecto.",
+        "Debe intervenir de inmediato para contener físicamente sin golpear, convocar auxilio médico de emergencia/SAME, preservar su vida y asentar minuciosamente cada intervención.",
+        "Debe dejarlo dentro de la celda cerrada para evitar agresiones contra el personal policial.",
+        "Debe esperar hasta las 08:00 AM para remitirlo a la fiscalía de turno."
+      ],
+      correct: 1,
+      exp: "La policía ejerce la posición de garante de la vida e integridad psicofísica de quien está bajo su custodia; ante episodios de autolesión o crisis psiquiátrica se exige auxilio médico urgente y contención técnica."
+    },
+    {
+      id: 9,
+      q: "Los inspectores de la Ley 26.827 entrevistan a un detenido en el calabozo, quien denuncia que fue golpeado por un cabo de la comisaría. Una vez que los inspectores se retiran, el oficial a cargo traslada al interno a un calabozo de castigo sin luz ni ventilación. Este accionar se encuadra como:",
+      options: [
+        "Ejercicio legítimo de la potestad disciplinaria de reubicación de internos problemáticos.",
+        "Represalia directa, prohibida expresamente por la Ley 26.827, que acarrea responsabilidad penal y administrativa inmediata sobre el personal policial involucrado.",
+        "Una medida ordinaria de aislamiento preventivo para preservar la prueba sumarial.",
+        "Un trámite interno que no puede ser denunciado por los comisionados."
+      ],
+      correct: 1,
+      exp: "El art. 17 de la Ley 26.827 prohíbe terminantemente cualquier tipo de sanción, hostigamiento o represalia contra personas privadas de libertad a consecuencia de haber aportado información o denuncias."
+    },
+    {
+      id: 10,
+      q: "Llega una ciudadana a la guardia denunciando que fue víctima de tocamientos indebidos en la vía pública hace dos días. El sumariante le responde: 'Señora, como pasaron 48 horas y no hay autor aprehendido, vaya al Ministerio Público Fiscal en calle España, acá no le podemos tomar la denuncia'. Bajo la Ley 9788 (mod. Art. 146 CPPT)[cite: 1]:",
+      options: [
+        "El sumariante procedió bien para evitar sobrecargar los legajos de la comisaría.",
+        "El funcionario incurre en incumplimiento de sus deberes funcionales: la policía tiene la obligación legal de recibir toda denuncia de delito de acción pública sin dilaciones[cite: 1].",
+        "La denuncia solo se recibe en sede policial si la víctima presenta un certificado médico previo.",
+        "El trámite es opcional según el criterio del jefe de turno."
+      ],
+      correct: 1,
+      exp: "La Ley 9788 modificó el régimen de denuncias: la policía no puede excusarse ni derivar indebidamente a las víctimas. Toda denuncia debe recepcionarse, labrarse y comunicarse al MPF[cite: 1]."
+    },
+    {
+      id: 11,
+      q: "En el legajo de investigación por un robo agravado, el fiscal solicita al oficial que le remita las pertenencias secuestradas al imputado. El oficial constata que la billetera con dinero no tiene precinto ni rótulo de cadena de custodia, y faltan 5.000 pesos respecto de lo anotado en el acta preliminar. Procesalmente:",
+      options: [
+        "No genera inconvenientes si el imputado confiesa el delito en la audiencia oral.",
+        "Se produce una gravísima vulneración de la cadena de custodia y eventual delito de sustracción de efectos, habilitando a la defensa a plantear la exclusión y nulidad del elemento.",
+        "Se subsana agregando un recibo simple firmado por el oficial saliente de turno.",
+        "El dinero puede ser compensado por la comisaría antes de la audiencia."
+      ],
+      correct: 1,
+      exp: "La falta de preservación y rotura de la cadena de custodia desacredita la integridad de la prueba material y compromete la responsabilidad penal del custodio por los bienes secuestrados."
+    },
+    {
+      id: 12,
+      q: "Durante la requisa a un vehículo detenido en la vía pública, el conductor se niega a que le abran el baúl manifestando: 'No tienen orden judicial'. El oficial procede a abrirlo por la fuerza invocando 'que el sujeto se puso nervioso al solicitarle la cédula verde'. El secuestro resultante:",
+      options: [
+        "Es plenamente válido porque el estado de nerviosismo constituye sospecha vehemente y fundada.",
+        "Corre altísimo riesgo de nulidad insanable: el nerviosismo subjetivo no configura causa objetiva ni urgente para eludir la exigencia de orden judicial o flagrancia.",
+        "Es legítimo siempre que se convoque a un testigo de actuación con posterioridad al hallazgo.",
+        "Queda convalidado de pleno derecho si en el baúl se encuentra un arma no declarada."
+      ],
+      correct: 1,
+      exp: "El éxito de un procedimiento no purga la arbitrariedad de su inicio. La Ley 9322 y las garantías procesales exigen datos objetivos y previos, descartando el nerviosismo como habilitante legal[cite: 1]."
+    },
+    {
+      id: 13,
+      q: "En una causa penal, la defensa del imputado pide la declaración testimonial del oficial en audiencia de debate. El fiscal le pide al policía: 'Lea en voz alta todo el sumario que armó en la comisaría'. El Juez:",
+      options: [
+        "Autorizará la lectura completa del acta para que no se omitan detalles del informe policial.",
+        "Rechazará la lectura íntegra: en el sistema adversarial el testimonio es oral y personal. Las actas solo pueden usarse para refrescar memoria o marcar contradicciones.",
+        "Obligará al oficial a contestar únicamente por escrito.",
+        "Permitirá que el comisario declare en lugar del oficial interviniente."
+      ],
+      correct: 1,
+      exp: "En el juicio adversarial rige el principio de oralidad[cite: 1]. Está prohibida la incorporación por simple lectura de las actas de instrucción policial, salvo los supuestos excepcionales de refresco de memoria."
+    },
+    {
+      id: 14,
+      q: "Se presenta en la comisaría un abogado matriculado exhibiendo poder y solicitando entrevistarse con su defendido, aprehendido hace 2 horas. El sargento de guardia le informa: 'Está incomunicado por disposición del Comisario hasta mañana'. Esta respuesta:",
+      options: [
+        "Es conforme a derecho, ya que el jefe de seccional puede ordenar 24 horas de incomunicación policial.",
+        "Es un acto arbitrario e ilegal: la incomunicación solo puede ser dispuesta por orden judicial fundada y jamás impide la comunicación privada con el abogado defensor.",
+        "Es correcta si el detenido fue capturado en flagrancia.",
+        "Es válida siempre que el abogado presente la fianza correspondiente en la caja de la dependencia."
+      ],
+      correct: 1,
+      exp: "La policía no tiene facultades de incomunicar a nadie por criterio propio. Toda incomunicación es judicial y excepcional, y aun así jamás restringe el acceso irrestricto de la defensa técnica."
+    },
+    {
+      id: 15,
+      q: "03:00 PM. Un personal policial traslada a un detenido esposado al hospital público para curaciones. En la sala de espera colmada de pacientes, el efectivo le grita: '¡Caminá derecho, delincuente, que por tu culpa no puedo almorzar!'. Este comportamiento:",
+      options: [
+        "Es una mera falta de cortesía sin consecuencias jurídicas relevantes.",
+        "Configura trato degradante y vejatorio, violentando la presunción de inocencia y las directrices de la Ley 26.827 y deberes policiales de Tucumán.",
+        "Es admisible si el detenido opuso resistencia al salir del patrullero.",
+        "Solo puede sancionarse si el detenido radica una queja ante el Ministerio de Salud."
+      ],
+      correct: 1,
+      exp: "El respeto a la dignidad inherente de la persona bajo custodia estatal prohíbe las humillaciones públicas, agravios verbales o actos vejatorios en traslados sanitarios o judiciales."
+    },
+    {
+      id: 16,
+      q: "Al asumir el turno de guardia a las 20:00 hs, el Oficial de Servicio saliente le dice al entrante: 'En el calabozo 2 hay un aprehendido desde ayer al mediodía; todavía no llamamos a la fiscalía porque estábamos saturados de trabajo'. El oficial entrante debe:",
+      options: [
+        "Dejar todo como está y esperar al turno de la mañana siguiente para elevar las planillas juntas.",
+        "Comunicar de inmediato la anomalía a la Unidad Fiscal interviniente, asentar la irregularidad en el Libro de Guardia y arbitrar la situación procesal de la persona privada de libertad.",
+        "Liberar al aprehendido por su propia cuenta de forma verbal en la puerta de la comisaría.",
+        "Ocultar la constancia en el libro de detenidos para no comprometer al oficial saliente."
+      ],
+      correct: 1,
+      exp: "El oficial no puede convalidar una detención ilegal o prolongada de hecho. Asume la posición de garante y debe regularizar inmediatamente la comunicación fiscal y el registro fidedigno."
+    },
+    {
+      id: 17,
+      q: "¿Cuál de las siguientes acciones en el Libro de Guardia constituye una adulteración grave sancionable penalmente bajo el marco de la custodia estatal de detenidos?",
+      options: [
+        "Consignar el ingreso con tinta azul en lugar de negra.",
+        "Enmendar o sobrescribir horarios de ingreso de un aprehendido, omitir folios o asentar hechos no ocurridos para encubrir demoras ilegales.",
+        "Registrar los datos del personal de relevo en orden cronológico.",
+        "Adjuntar constancias médicas en el legajo por cuerda separada."
+      ],
+      correct: 1,
+      exp: "El Libro de Guardia es un instrumento público. Adulterar horarios, falsear ingresos o tachar constancias para ocultar vejámenes o privaciones ilegales configura falsedad ideológica y encubrimiento."
+    },
+    {
+      id: 18,
+      q: "Un joven de 16 años es demorado por una patrulla tras protagonizar disturbios en la plaza. Es trasladado a la comisaría y alojado en la misma celda común junto a cuatro adultos procesados por robo calificado. Esta medida:",
+      options: [
+        "Es válida si no hay celdas individuales disponibles en la dependencia.",
+        "Viola de forma terminante las normas internacionales, la Ley 26.827 y el régimen procesal penal juvenil, que exigen la estricta separación de niños/adolescentes de personas adultas.",
+        "Es legítima si el menor de edad tiene contextura física robusta.",
+        "Puede autorizarse mediante firma de una constancia de conformidad de la guardia."
+      ],
+      correct: 1,
+      exp: "La separación categórica entre menores y adultos en lugares de detención es una regla de orden público internacional inquebrantable; alojarlos juntos compromete de lleno al Estado."
+    },
+    {
+      id: 19,
+      q: "Durante una requisa en los calabozos, se secuestran dos 'puntas' carcelarias caseras de hierro ocultas bajo un colchón. El oficial actuante debe:",
+      options: [
+        "Tirar las puntas al canasto de basura de la comisaría ya que no se sabe a quién pertenecían.",
+        "Documentar el hallazgo en acta detallada, individualizar el lugar exacto, fotografiar, rotular con precinto de trazabilidad y elevar las actuaciones de inmediato a la Unidad Fiscal.",
+        "Guardar las facas en el escritorio de la guardia como trofeo de prevención.",
+        "Imponer 5 días de incomunicación a todos los internos del calabozo de manera disciplinaria."
+      ],
+      correct: 1,
+      exp: "Todo elemento con aptitud lesiva hallado en custodia es evidencia material de una infracción o delito que debe preservarse formalmente con cadena de custodia e informarse al fiscal."
+    },
+    {
+      id: 20,
+      q: "En el sistema acusatorio adversarial y bajo el marco de los derechos humanos (Leyes 26.827 y 8933), la excelencia funcional del oficial policial de guardia descansa prioritariamente en:",
+      options: [
+        "Asegurar que los sospechosos firmen declaraciones espontáneas inculpatorias a cualquier costo.",
+        "El apego estricto a la legalidad procesal, la trazabilidad documental de cada orden, el trato digno a las personas bajo custodia y la comunicación veraz e inmediata con el MPF y órganos de control.",
+        "Impedir a cualquier costo las visitas de inspectores civiles u organismos de control a los calabozos.",
+        "Resolver todos los incidentes internos de la guardia sin dar aviso a los magistrados judiciales."
+      ],
+      correct: 1,
+      exp: "El policía profesional en el modelo adversarial actúa con estricta transparencia, garantiza los derechos de las personas bajo su esfera de custodia y respalda su actuación con pruebas fidedignas y verificables."
+    }
+  ];
+
+  let currentIndex = 0;
+  let scorePoints = 0;
+  let violationsCount = 0;
+  let feedbackData = [];
+  let userData = {};
+  let examActive = false;
+  let penaltyTriggered = false;
+
+  const screenInit = document.getElementById("screenInit");
+  const screenExam = document.getElementById("screenExam");
+  const screenResults = document.getElementById("screenResults");
+  const penaltyOverlay = document.getElementById("penaltyOverlay");
+  const btnContinuePenalty = document.getElementById("btnContinuePenalty");
+
+  // Iniciar Examen y Activar Pantalla Completa
+  document.getElementById("initForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    userData = {
+      nombre: document.getElementById("nombre").value.trim(),
+      jerarquia: document.getElementById("jerarquia").value,
+      dni: document.getElementById("dni").value.trim(),
+      destino: document.getElementById("destino").value.trim()
+    };
+
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch(() => {});
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    }
+
+    screenInit.style.display = "none";
+    screenExam.style.display = "block";
+    examActive = true;
+    renderQuestion(currentIndex);
+  });
+
+  function renderQuestion(index) {
+    if (index >= questions.length) {
+      finishExam();
+      return;
+    }
+
+    penaltyTriggered = false;
+    const q = questions[index];
+    document.getElementById("stepCounter").textContent = `Pregunta ${index + 1} de ${questions.length}`;
+    document.getElementById("questionText").textContent = q.q;
+
+    const optContainer = document.getElementById("optionsContainer");
+    optContainer.innerHTML = "";
+
+    q.options.forEach((opt, optIdx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt-btn";
+      btn.innerHTML = `<strong>${String.fromCharCode(65 + optIdx)})</strong> ${opt}`;
+      btn.onclick = () => submitAnswer(optIdx, false);
+      optContainer.appendChild(btn);
+    });
+  }
+
+  function submitAnswer(chosenIdx, isPenalty = false) {
+    if (!examActive) return;
+
+    const q = questions[currentIndex];
+    const isCorrect = !isPenalty && (chosenIdx === q.correct);
+
+    if (isCorrect) scorePoints++;
+
+    feedbackData.push({
+      num: q.id,
+      question: q.q,
+      isCorrect: isCorrect,
+      userAnswer: isPenalty ? "ANULADA POR SALIDA / CAMBIO DE VENTANA" : q.options[chosenIdx],
+      correctAnswer: q.options[q.correct],
+      exp: q.exp
+    });
+
+    currentIndex++;
+    renderQuestion(currentIndex);
+  }
+
+  // Detección de salida de ventana o pérdida de foco
+  function handleViolation() {
+    if (!examActive || penaltyTriggered || currentIndex >= questions.length) return;
+
+    penaltyTriggered = true;
+    violationsCount++;
+    penaltyOverlay.style.display = "flex";
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && examActive) {
+      handleViolation();
+    }
+  });
+
+  window.addEventListener("blur", () => {
+    if (examActive) {
+      handleViolation();
+    }
+  });
+
+  btnContinuePenalty.onclick = () => {
+    penaltyOverlay.style.display = "none";
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+    submitAnswer(-1, true);
+  };
+
+  async function finishExam() {
+    examActive = false;
+    screenExam.style.display = "none";
+    screenResults.style.display = "block";
+
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+
+    const finalScore = Number((1 + (scorePoints / questions.length) * 9).toFixed(1));
+
+    document.getElementById("scoreDisplay").textContent = finalScore.toFixed(1);
+    document.getElementById("scoreDetails").textContent = `Aciertos: ${scorePoints} de ${questions.length} (${Math.round((scorePoints / questions.length) * 100)}%) • Salidas sancionadas: ${violationsCount}`;
+
+    const fbContainer = document.getElementById("feedbackContainer");
+    fbContainer.innerHTML = feedbackData.map(item => `
+      <div class="feedback-item ${item.isCorrect ? 'correct' : 'incorrect'}">
+        <div class="q-title">${item.num}. ${item.question}</div>
+        <div><strong>Respuesta asentada:</strong> ${item.userAnswer} ${item.isCorrect ? '✅' : '❌'}</div>
+        ${!item.isCorrect ? `<div style="color: var(--success); margin-top: 2px;"><strong>Criterio reglamentario:</strong> ${item.correctAnswer}</div>` : ''}
+        <div class="explanation"><strong>Fundamento normativo:</strong> ${item.exp}</div>
+      </div>
+    `).join("");
+
+    // Envío a Google Sheets respetando las 8 columnas
+    const payload = {
+      fecha: new Date().toLocaleString("es-AR", { timeZone: "America/Argentina/Tucuman" }),
+      nombre: userData.nombre,
+      jerarquia: userData.jerarquia,
+      dni: userData.dni,
+      destino: userData.destino,
+      aciertos: scorePoints,
+      nota: finalScore,
+      tiempo: violationsCount > 0 ? `Finalizado (${violationsCount} salidas sancionadas)` : "Finalizado (Sin infracciones)"
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn("Error en sincronización con Sheets:", err);
+    }
+  }
+</script>
+
+</body>
+</html>

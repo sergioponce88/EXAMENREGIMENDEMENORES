@@ -307,7 +307,7 @@
     <div class="badge-bar">
       <span class="badge">20 Casos Prácticos de Turno</span>
       <span class="badge">Escala de 1 a 10</span>
-      <span class="badge">Monitoreo Anti-Fuga Activo</span>
+      <span class="badge">Opciones Distribuidas Aleatoriamente</span>
     </div>
   </header>
 
@@ -389,32 +389,32 @@
 </div>
 
 <script>
-  // Tu endpoint web app de Google Apps Script integrado
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc1O1BVgePuNNbIAj4uhxGT2qwM_8cjjsJz7Yx6Ug8Qe2-rfikBW95uNWjUMNlz-T7uw/exec";
 
+  // 20 Preguntas con opciones y respuestas correctas distribuidas equitativamente (A, B, C y D)
   const questions = [
     {
       id: 1,
       q: "02:30 AM. Llegan a la comisaría dos comisionados del Comité Provincial de Prevención de la Tortura (Ley 26.827) exhibiendo credenciales para inspeccionar los calabozos. El Oficial de Servicio les impide el paso manifestando que a esa hora no hay personal superior y que carecen de una orden judicial escrita firmada por un Juez de Garantías. El proceder del oficial es:",
       options: [
         "Correcto, pues ninguna persona civil puede ingresar a un área restringida policial sin autorización del fiscal o juez de turno.",
-        "Incorrecto e ilegítimo: la Ley 26.827 otorga facultades irrestrictas de inspección sorpresiva, a cualquier hora del día o de la noche, sin necesidad de aviso previo ni orden judicial.",
         "Correcto, siempre que asiente en el Libro de Guardia que los comisionados deben regresar a las 08:00 AM.",
+        "Incorrecto e ilegítimo: la Ley 26.827 otorga facultades irrestrictas de inspección sorpresiva, a cualquier hora del día o de la noche, sin necesidad de aviso previo ni orden judicial.",
         "Válido únicamente si los calabozos se encuentran con capacidad colmada."
       ],
-      correct: 1,
+      correct: 2, // Opción C
       exp: "La Ley 26.827 establece que los órganos del Mecanismo tienen acceso irrestricto, en cualquier momento, de día o de noche, a todos los lugares de privación de libertad, sin requerir orden judicial ni previo aviso."
     },
     {
       id: 2,
       q: "Durante una inspección a los calabozos, los inspectores solicitan entrevistarse en privado y a solas con tres detenidos. El oficial a cargo dispone que dos suboficiales permanezcan dentro de la celda 'por razones de seguridad funcional de los propios inspectores'. Esta disposición:",
       options: [
-        "Es un deber ineludible de custodia de la integridad física de los visitantes.",
         "Vulnera flagrantemente la Ley 26.827, que consagra el derecho absoluto a mantener entrevistas privadas y confidenciales sin testigos policiales ni escuchas.",
+        "Es un deber ineludible de custodia de la integridad física de los visitantes.",
         "Es válida solo si los detenidos están procesados por delitos contra las personas.",
         "Se ajusta a la normativa siempre que los funcionarios policiales no tomen notas de lo hablado."
       ],
-      correct: 1,
+      correct: 0, // Opción A
       exp: "El art. 16 de la Ley 26.827 garantiza el desarrollo de entrevistas a solas y confidenciales con las personas privadas de su libertad, sin testigos ni personal de custodia a la vista o al alcance del oído."
     },
     {
@@ -422,11 +422,11 @@
       q: "Ingresa un ciudadano aprehendido en flagrancia. Presenta un fuerte golpe en el pómulo derecho. El aprehensor manifiesta que 'se cayó al suelo durante la fuga'. El Oficial de Guardia, para agilizar el trámite ante la Unidad Fiscal, omite solicitar el reconocimiento médico legal de ingreso y lo aloja directamente. Esta omisión configura:",
       options: [
         "Una falta leve que se subsana cuando la defensa pública designe abogado.",
-        "Un quebrantamiento severo del deber de garante y de los protocolos de prevención de la tortura: todo ingreso debe contar con examen médico inmediato y constancia fidedigna en libro.",
         "Un procedimiento admisible siempre que el aprehendido manifieste verbalmente sentirse bien.",
-        "Una práctica regular si el hecho ocurrió durante el fin de semana."
+        "Una práctica regular si el hecho ocurrió durante el fin de semana.",
+        "Un quebrantamiento severo del deber de garante y de los protocolos de prevención de la tortura: todo ingreso debe contar con examen médico inmediato y constancia fidedigna en libro."
       ],
-      correct: 1,
+      correct: 3, // Opción D
       exp: "El control médico de ingreso y egreso obligatorio es la garantía esencial para constatar el estado psicofísico del detenido, deslindar responsabilidades y aplicar las directrices del Protocolo de Estambul."
     },
     {
@@ -438,7 +438,7 @@
         "Es correcta únicamente respecto a las grabaciones fílmicas, debiendo exhibir solo los libros foliados.",
         "Está amparada por el secreto sumarial del Código Procesal Penal."
       ],
-      correct: 1,
+      correct: 1, // Opción B
       exp: "La Ley 26.827 obliga a exhibir toda la documentación vinculada al trato y condiciones de detención, libros de guardias, traslados, ingresos, pertenencias y registros fílmicos."
     },
     {
@@ -446,23 +446,23 @@
       q: "Tras una queja colectiva de los alojados por el calor extremo en el calabozo, el personal de guardia decide cortar el suministro de agua corriente y retirar los colchones de las celdas durante 12 horas 'hasta que se calmen'. Esta medida es calificada procesalmente como:",
       options: [
         "Facultad disciplinaria legítima propia del régimen interno de la seccional.",
-        "Trato cruel, inhumano o degradante sancionado por la Ley 26.827 y los Tratados Internacionales de Derechos Humanos con jerarquía constitucional.",
         "Una falta administrativa menor de competencia exclusiva de Asuntos Internos.",
+        "Trato cruel, inhumano o degradante sancionado por la Ley 26.827 y los Tratados Internacionales de Derechos Humanos con jerarquía constitucional.",
         "Medida cautelar preventiva de seguridad ante riesgo de motín."
       ],
-      correct: 1,
+      correct: 2, // Opción C
       exp: "La supresión de agua potable, alimentos o elementos básicos de descanso constituye trato cruel, inhumano y degradante; las sanciones colectivas corporales o de privación de derechos básicos están absolutamente prohibidas."
     },
     {
       id: 6,
       q: "Al realizar una requisa en el sector de alojamiento preventivo, el Oficial de Servicio ordena que todos los internos se desnuden por completo y realicen flexiones reiteradas en el patio frente a la guardia. Conforme los estándares vigentes de la Ley 26.827:",
       options: [
-        "Es el método reglamentario habitual para descartar tenencia de elementos prohibidos.",
         "Constituye una práctica degradante e ilícita; las requisas corporales deben respetar el pudor, estar justificadas individualmente y prohibir la desnudez total forzosa y las flexiones.",
+        "Es el método reglamentario habitual para descartar tenencia de elementos prohibidos.",
         "Es válida siempre que se realice en presencia de dos testigos de actuación.",
         "Solo es ilegal si se realiza en presencia de internos de otro pabellón."
       ],
-      correct: 1,
+      correct: 0, // Opción A
       exp: "La desnudez forzosa y las flexiones de piernas son consideradas tratos vejatorios y degradantes por el sistema interamericano y la Ley 26.827. Las requisas deben ser proporcionadas y con tecnología no invasiva."
     },
     {
@@ -470,11 +470,11 @@
       q: "Un detenido en la comisaría solicita comunicarse telefónicamente con un familiar para avisar de su aprehensión. El sargento de guardia le cobra dinero en efectivo por prestarle el teléfono celular corporativo y le advierte: 'En esta comisaría las llamadas no son gratis'. Esta conducta:",
       options: [
         "Es un acuerdo lícito entre partes para cubrir el costo operativo del servicio telefónico.",
-        "Constituye extorsión, violación de deberes y privación arbitraria del derecho de comunicación gratuita garantizado por la ley procesal y de prevención de la tortura.",
         "Es una falta reglamentaria que no tiene relevancia judicial en el legajo fiscal.",
-        "Es admisible si el detenido no tiene defensor oficial designado."
+        "Es admisible si el detenido no tiene defensor oficial designado.",
+        "Constituye extorsión, violación de deberes y privación arbitraria del derecho de comunicación gratuita garantizado por la ley procesal y de prevención de la tortura."
       ],
-      correct: 1,
+      correct: 3, // Opción D
       exp: "El derecho a la comunicación inmediata y gratuita del detenido con familiares o defensa letrada es una garantía esencial; tarifarla o impedirla configura grave ilícito penal y funcional."
     },
     {
@@ -486,7 +486,7 @@
         "Debe dejarlo dentro de la celda cerrada para evitar agresiones contra el personal policial.",
         "Debe esperar hasta las 08:00 AM para remitirlo a la fiscalía de turno."
       ],
-      correct: 1,
+      correct: 1, // Opción B
       exp: "La policía ejerce la posición de garante de la vida e integridad psicofísica de quien está bajo su custodia; ante episodios de autolesión o crisis psiquiátrica se exige auxilio médico urgente y contención técnica."
     },
     {
@@ -494,23 +494,23 @@
       q: "Los inspectores de la Ley 26.827 entrevistan a un detenido en el calabozo, quien denuncia que fue golpeado por un cabo de la comisaría. Una vez que los inspectores se retiran, el oficial a cargo traslada al interno a un calabozo de castigo sin luz ni ventilación. Este accionar se encuadra como:",
       options: [
         "Ejercicio legítimo de la potestad disciplinaria de reubicación de internos problemáticos.",
-        "Represalia directa, prohibida expresamente por la Ley 26.827, que acarrea responsabilidad penal y administrativa inmediata sobre el personal policial involucrado.",
         "Una medida ordinaria de aislamiento preventivo para preservar la prueba sumarial.",
+        "Represalia directa, prohibida expresamente por la Ley 26.827, que acarrea responsabilidad penal y administrativa inmediata sobre el personal policial involucrado.",
         "Un trámite interno que no puede ser denunciado por los comisionados."
       ],
-      correct: 1,
+      correct: 2, // Opción C
       exp: "El art. 17 de la Ley 26.827 prohíbe terminantemente cualquier tipo de sanción, hostigamiento o represalia contra personas privadas de libertad a consecuencia de haber aportado información o denuncias."
     },
     {
       id: 10,
       q: "Llega una ciudadana a la guardia denunciando que fue víctima de tocamientos indebidos en la vía pública hace dos días. El sumariante le responde: 'Señora, como pasaron 48 horas y no hay autor aprehendido, vaya al Ministerio Público Fiscal en calle España, acá no le podemos tomar la denuncia'. Bajo la Ley 9788 (mod. Art. 146 CPPT)[cite: 1]:",
       options: [
-        "El sumariante procedió bien para evitar sobrecargar los legajos de la comisaría.",
         "El funcionario incurre en incumplimiento de sus deberes funcionales: la policía tiene la obligación legal de recibir toda denuncia de delito de acción pública sin dilaciones[cite: 1].",
+        "El sumariante procedió bien para evitar sobrecargar los legajos de la comisaría.",
         "La denuncia solo se recibe en sede policial si la víctima presenta un certificado médico previo.",
         "El trámite es opcional según el criterio del jefe de turno."
       ],
-      correct: 1,
+      correct: 0, // Opción A
       exp: "La Ley 9788 modificó el régimen de denuncias: la policía no puede excusarse ni derivar indebidamente a las víctimas. Toda denuncia debe recepcionarse, labrarse y comunicarse al MPF[cite: 1]."
     },
     {
@@ -518,11 +518,11 @@
       q: "En el legajo de investigación por un robo agravado, el fiscal solicita al oficial que le remita las pertenencias secuestradas al imputado. El oficial constata que la billetera con dinero no tiene precinto ni rótulo de cadena de custodia, y faltan 5.000 pesos respecto de lo anotado en el acta preliminar. Procesalmente:",
       options: [
         "No genera inconvenientes si el imputado confiesa el delito en la audiencia oral.",
-        "Se produce una gravísima vulneración de la cadena de custodia y eventual delito de sustracción de efectos, habilitando a la defensa a plantear la exclusión y nulidad del elemento.",
         "Se subsana agregando un recibo simple firmado por el oficial saliente de turno.",
-        "El dinero puede ser compensado por la comisaría antes de la audiencia."
+        "El dinero puede ser compensado por la comisaría antes de la audiencia.",
+        "Se produce una gravísima vulneración de la cadena de custodia y eventual delito de sustracción de efectos, habilitando a la defensa a plantear la exclusión y nulidad del elemento."
       ],
-      correct: 1,
+      correct: 3, // Opción D
       exp: "La falta de preservación y rotura de la cadena de custodia desacredita la integridad de la prueba material y compromete la responsabilidad penal del custodio por los bienes secuestrados."
     },
     {
@@ -534,7 +534,7 @@
         "Es legítimo siempre que se convoque a un testigo de actuación con posterioridad al hallazgo.",
         "Queda convalidado de pleno derecho si en el baúl se encuentra un arma no declarada."
       ],
-      correct: 1,
+      correct: 1, // Opción B
       exp: "El éxito de un procedimiento no purga la arbitrariedad de su inicio. La Ley 9322 y las garantías procesales exigen datos objetivos y previos, descartando el nerviosismo como habilitante legal[cite: 1]."
     },
     {
@@ -542,23 +542,23 @@
       q: "En una causa penal, la defensa del imputado pide la declaración testimonial del oficial en audiencia de debate. El fiscal le pide al policía: 'Lea en voz alta todo el sumario que armó en la comisaría'. El Juez:",
       options: [
         "Autorizará la lectura completa del acta para que no se omitan detalles del informe policial.",
-        "Rechazará la lectura íntegra: en el sistema adversarial el testimonio es oral y personal. Las actas solo pueden usarse para refrescar memoria o marcar contradicciones.",
         "Obligará al oficial a contestar únicamente por escrito.",
+        "Rechazará la lectura íntegra: en el sistema adversarial el testimonio es oral y personal. Las actas solo pueden usarse para refrescar memoria o marcar contradicciones.",
         "Permitirá que el comisario declare en lugar del oficial interviniente."
       ],
-      correct: 1,
+      correct: 2, // Opción C
       exp: "En el juicio adversarial rige el principio de oralidad[cite: 1]. Está prohibida la incorporación por simple lectura de las actas de instrucción policial, salvo los supuestos excepcionales de refresco de memoria."
     },
     {
       id: 14,
       q: "Se presenta en la comisaría un abogado matriculado exhibiendo poder y solicitando entrevistarse con su defendido, aprehendido hace 2 horas. El sargento de guardia le informa: 'Está incomunicado por disposición del Comisario hasta mañana'. Esta respuesta:",
       options: [
-        "Es conforme a derecho, ya que el jefe de seccional puede ordenar 24 horas de incomunicación policial.",
         "Es un acto arbitrario e ilegal: la incomunicación solo puede ser dispuesta por orden judicial fundada y jamás impide la comunicación privada con el abogado defensor.",
+        "Es conforme a derecho, ya que el jefe de seccional puede ordenar 24 horas de incomunicación policial.",
         "Es correcta si el detenido fue capturado en flagrancia.",
         "Es válida siempre que el abogado presente la fianza correspondiente en la caja de la dependencia."
       ],
-      correct: 1,
+      correct: 0, // Opción A
       exp: "La policía no tiene facultades de incomunicar a nadie por criterio propio. Toda incomunicación es judicial y excepcional, y aun así jamás restringe el acceso irrestricto de la defensa técnica."
     },
     {
@@ -566,11 +566,11 @@
       q: "03:00 PM. Un personal policial traslada a un detenido esposado al hospital público para curaciones. En la sala de espera colmada de pacientes, el efectivo le grita: '¡Caminá derecho, delincuente, que por tu culpa no puedo almorzar!'. Este comportamiento:",
       options: [
         "Es una mera falta de cortesía sin consecuencias jurídicas relevantes.",
-        "Configura trato degradante y vejatorio, violentando la presunción de inocencia y las directrices de la Ley 26.827 y deberes policiales de Tucumán.",
         "Es admisible si el detenido opuso resistencia al salir del patrullero.",
-        "Solo puede sancionarse si el detenido radica una queja ante el Ministerio de Salud."
+        "Solo puede sancionarse si el detenido radica una queja ante el Ministerio de Salud.",
+        "Configura trato degradante y vejatorio, violentando la presunción de inocencia y las directrices de la Ley 26.827 y deberes policiales de Tucumán."
       ],
-      correct: 1,
+      correct: 3, // Opción D
       exp: "El respeto a la dignidad inherente de la persona bajo custodia estatal prohíbe las humillaciones públicas, agravios verbales o actos vejatorios en traslados sanitarios o judiciales."
     },
     {
@@ -582,7 +582,7 @@
         "Liberar al aprehendido por su propia cuenta de forma verbal en la puerta de la comisaría.",
         "Ocultar la constancia en el libro de detenidos para no comprometer al oficial saliente."
       ],
-      correct: 1,
+      correct: 1, // Opción B
       exp: "El oficial no puede convalidar una detención ilegal o prolongada de hecho. Asume la posición de garante y debe regularizar inmediatamente la comunicación fiscal y el registro fidedigno."
     },
     {
@@ -590,23 +590,23 @@
       q: "¿Cuál de las siguientes acciones en el Libro de Guardia constituye una adulteración grave sancionable penalmente bajo el marco de la custodia estatal de detenidos?",
       options: [
         "Consignar el ingreso con tinta azul en lugar de negra.",
-        "Enmendar o sobrescribir horarios de ingreso de un aprehendido, omitir folios o asentar hechos no ocurridos para encubrir demoras ilegales.",
         "Registrar los datos del personal de relevo en orden cronológico.",
+        "Enmendar o sobrescribir horarios de ingreso de un aprehendido, omitir folios o asentar hechos no ocurridos para encubrir demoras ilegales.",
         "Adjuntar constancias médicas en el legajo por cuerda separada."
       ],
-      correct: 1,
+      correct: 2, // Opción C
       exp: "El Libro de Guardia es un instrumento público. Adulterar horarios, falsear ingresos o tachar constancias para ocultar vejámenes o privaciones ilegales configura falsedad ideológica y encubrimiento."
     },
     {
       id: 18,
       q: "Un joven de 16 años es demorado por una patrulla tras protagonizar disturbios en la plaza. Es trasladado a la comisaría y alojado en la misma celda común junto a cuatro adultos procesados por robo calificado. Esta medida:",
       options: [
-        "Es válida si no hay celdas individuales disponibles en la dependencia.",
         "Viola de forma terminante las normas internacionales, la Ley 26.827 y el régimen procesal penal juvenil, que exigen la estricta separación de niños/adolescentes de personas adultas.",
+        "Es válida si no hay celdas individuales disponibles en la dependencia.",
         "Es legítima si el menor de edad tiene contextura física robusta.",
         "Puede autorizarse mediante firma de una constancia de conformidad de la guardia."
       ],
-      correct: 1,
+      correct: 0, // Opción A
       exp: "La separación categórica entre menores y adultos en lugares de detención es una regla de orden público internacional inquebrantable; alojarlos juntos compromete de lleno al Estado."
     },
     {
@@ -614,11 +614,11 @@
       q: "Durante una requisa en los calabozos, se secuestran dos 'puntas' carcelarias caseras de hierro ocultas bajo un colchón. El oficial actuante debe:",
       options: [
         "Tirar las puntas al canasto de basura de la comisaría ya que no se sabe a quién pertenecían.",
-        "Documentar el hallazgo en acta detallada, individualizar el lugar exacto, fotografiar, rotular con precinto de trazabilidad y elevar las actuaciones de inmediato a la Unidad Fiscal.",
         "Guardar las facas en el escritorio de la guardia como trofeo de prevención.",
-        "Imponer 5 días de incomunicación a todos los internos del calabozo de manera disciplinaria."
+        "Imponer 5 días de incomunicación a todos los internos del calabozo de manera disciplinaria.",
+        "Documentar el hallazgo en acta detallada, individualizar el lugar exacto, fotografiar, rotular con precinto de trazabilidad y elevar las actuaciones de inmediato a la Unidad Fiscal."
       ],
-      correct: 1,
+      correct: 3, // Opción D
       exp: "Todo elemento con aptitud lesiva hallado en custodia es evidencia material de una infracción o delito que debe preservarse formalmente con cadena de custodia e informarse al fiscal."
     },
     {
@@ -630,7 +630,7 @@
         "Impedir a cualquier costo las visitas de inspectores civiles u organismos de control a los calabozos.",
         "Resolver todos los incidentes internos de la guardia sin dar aviso a los magistrados judiciales."
       ],
-      correct: 1,
+      correct: 1, // Opción B
       exp: "El policía profesional en el modelo adversarial actúa con estricta transparencia, garantiza los derechos de las personas bajo su esfera de custodia y respalda su actuación con pruebas fidedignas y verificables."
     }
   ];

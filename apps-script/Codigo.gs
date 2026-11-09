@@ -44,7 +44,7 @@ function doPost(e) {
 function doGet(e) {
   var p = (e && e.parameter) || {};
   if (p.action !== "list") return ContentService.createTextOutput("ok");
-  if (p.key !== CLAVE_DOCENTES) return json_({ ok: false, error: "Clave incorrecta" });
+  if (p.key !== CLAVE_DOCENTES) return json_({ ok: false, error: "Clave incorrecta" }, p.callback);
   var v = hoja_().getDataRange().getDisplayValues();
   v.shift(); // encabezados
   var rows = v.map(function (r) {
@@ -52,9 +52,11 @@ function doGet(e) {
     KEYS.forEach(function (k, i) { o[k] = r[i] || ""; });
     return o;
   });
-  return json_({ ok: true, rows: rows });
+  return json_({ ok: true, rows: rows }, p.callback);
 }
 
-function json_(o) {
+function json_(o, cb) {
+  if (cb && /^[A-Za-z_$][\w$]*$/.test(cb))
+    return ContentService.createTextOutput(cb + "(" + JSON.stringify(o) + ")").setMimeType(ContentService.MimeType.JAVASCRIPT);
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }

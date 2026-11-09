@@ -79,11 +79,16 @@ const $=id=>document.getElementById(id);let KEY='',rows=[],sortK='fecha',sortD=-
 const num=s=>parseFloat(String(s).replace(',','.'))||0;
 const salidas=t=>{const m=String(t).match(/\((\d+)/);return m?+m[1]:0};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function jsonp(){return new Promise((ok,ko)=>{const cb='cb'+Date.now()+Math.floor(Math.random()*1e4),sc=document.createElement('script');
+  const end=()=>{delete window[cb];sc.remove();clearTimeout(tm)};const tm=setTimeout(()=>{end();ko(new Error('timeout'))},15000);
+  window[cb]=d=>{end();ok(d)};sc.onerror=()=>{end();ko(new Error('jsonp'))};
+  sc.src=`${SCRIPT_URL}?action=list&key=${encodeURIComponent(KEY)}&callback=${cb}&t=${Date.now()}`;document.head.appendChild(sc)})}
 async function load(){
-  let r,t,d;
-  try{r=await fetch(`${SCRIPT_URL}?action=list&key=${encodeURIComponent(KEY)}&t=${Date.now()}`);t=await r.text()}
-  catch(e){throw new Error('ACCESO')}
-  try{d=JSON.parse(t)}catch(e){throw new Error(/doGet/i.test(t)?'DOGET':/sign ?in|iniciar sesi|accounts\.google/i.test(t)?'ACCESO':'OTRO')}
+  let d;
+  try{d=await jsonp()}catch(e){
+    let t;try{const r=await fetch(`${SCRIPT_URL}?action=list&key=${encodeURIComponent(KEY)}&t=${Date.now()}`);t=await r.text()}catch(x){throw new Error('SINRESP')}
+    try{d=JSON.parse(t)}catch(x){throw new Error(/doGet/i.test(t)?'DOGET':'SINRESP')}
+  }
   if(!d.ok)throw new Error(d.error||'Error');rows=d.rows.filter(x=>x.nombre);render();
   $('upd').textContent='Última actualización: '+new Date().toLocaleTimeString('es-AR');
 }
@@ -91,7 +96,7 @@ $('go').onclick=async()=>{KEY=$('key').value.trim();$('gerr').textContent='Verif
   try{await load();try{sessionStorage.setItem('mon_k',KEY)}catch(e){}$('gate').remove();$('app').hidden=false;timer=setInterval(()=>load().catch(()=>{}),20000)}
   catch(e){const M={'Clave incorrecta':'Clave incorrecta. Debe ser igual a CLAVE_DOCENTES del script (respetando mayúsculas).',
     DOGET:'El script no tiene publicada la versión nueva. Apps Script → Implementar → Gestionar implementaciones → lápiz → Nueva versión → Implementar.',
-    ACCESO:'Google bloquea la lectura. En la implementación, "Quién tiene acceso" debe ser "Cualquier persona" y "Ejecutar como: Yo". Luego Nueva versión.',
+    SINRESP:'El script no devuelve resultados. Publicá el código nuevo: Implementar → Gestionar implementaciones → EXAMENREGIMEN → lápiz → Versión: Nueva versión → Implementar.',
     OTRO:'El script respondió algo inesperado. Publicá una nueva versión del script y volvé a intentar.'};
     $('gerr').textContent=M[e.message]||('Error: '+e.message)}};
 $('key').onkeydown=e=>{if(e.key==='Enter')$('go').click()};

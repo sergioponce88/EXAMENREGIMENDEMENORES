@@ -41,7 +41,7 @@ td{padding:10px;border-top:1px solid var(--line);vertical-align:middle}
 #gate{min-height:100vh;display:grid;place-items:center;padding:20px}
 .gbox{width:100%;max-width:380px;background:var(--s1);border:1px solid var(--line);border-radius:20px;padding:28px;text-align:center}
 .gbox img{width:72px;margin-bottom:12px}.gbox input{width:100%;margin:18px 0 10px;text-align:center;font-size:18px}.gbox .btn{width:100%;padding:14px}
-.err{color:var(--co);font-size:13px;min-height:18px;margin-top:8px}
+.err{color:var(--co);font-size:13px;min-height:18px;margin-top:8px;line-height:1.45}
 #qs{max-height:560px;overflow:auto;padding-right:6px}
 .empty{color:var(--mut);padding:30px;text-align:center}
 @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}}
@@ -80,13 +80,20 @@ const num=s=>parseFloat(String(s).replace(',','.'))||0;
 const salidas=t=>{const m=String(t).match(/\((\d+)/);return m?+m[1]:0};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 async function load(){
-  const r=await fetch(`${SCRIPT_URL}?action=list&key=${encodeURIComponent(KEY)}&t=${Date.now()}`);const d=await r.json();
+  let r,t,d;
+  try{r=await fetch(`${SCRIPT_URL}?action=list&key=${encodeURIComponent(KEY)}&t=${Date.now()}`);t=await r.text()}
+  catch(e){throw new Error('ACCESO')}
+  try{d=JSON.parse(t)}catch(e){throw new Error(/doGet/i.test(t)?'DOGET':/sign ?in|iniciar sesi|accounts\.google/i.test(t)?'ACCESO':'OTRO')}
   if(!d.ok)throw new Error(d.error||'Error');rows=d.rows.filter(x=>x.nombre);render();
   $('upd').textContent='Última actualización: '+new Date().toLocaleTimeString('es-AR');
 }
 $('go').onclick=async()=>{KEY=$('key').value.trim();$('gerr').textContent='Verificando…';
   try{await load();try{sessionStorage.setItem('mon_k',KEY)}catch(e){}$('gate').remove();$('app').hidden=false;timer=setInterval(()=>load().catch(()=>{}),20000)}
-  catch(e){$('gerr').textContent=e.message==='Clave incorrecta'?'Clave incorrecta.':'No se pudo conectar. Verificá que el Apps Script esté actualizado.'}};
+  catch(e){const M={'Clave incorrecta':'Clave incorrecta. Debe ser igual a CLAVE_DOCENTES del script (respetando mayúsculas).',
+    DOGET:'El script no tiene publicada la versión nueva. Apps Script → Implementar → Gestionar implementaciones → lápiz → Nueva versión → Implementar.',
+    ACCESO:'Google bloquea la lectura. En la implementación, "Quién tiene acceso" debe ser "Cualquier persona" y "Ejecutar como: Yo". Luego Nueva versión.',
+    OTRO:'El script respondió algo inesperado. Publicá una nueva versión del script y volvé a intentar.'};
+    $('gerr').textContent=M[e.message]||('Error: '+e.message)}};
 $('key').onkeydown=e=>{if(e.key==='Enter')$('go').click()};
 try{const k=sessionStorage.getItem('mon_k');if(k){$('key').value=k;$('go').click()}}catch(e){}
 $('ref').onclick=()=>load().catch(()=>{});

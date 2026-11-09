@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monitor docente · Evaluación Régimen Penal Juvenil</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#0b0c10;--s1:rgba(255,255,255,.045);--s2:rgba(255,255,255,.08);--line:rgba(255,255,255,.10);--ink:#eef1f6;--mut:#9aa3b2;--cy:#3fd0ff;--co:#ff6b6b;--em:#2fd69a;--am:#ffb547;--disp:"Archivo","Arial Black",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0}body{background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:26px 20px 60px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cy)}
+h1{font-family:var(--disp);font-size:clamp(26px,4vw,40px);letter-spacing:-.02em;margin:6px 0 4px}
+.sub{color:var(--mut);font-size:14px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.live{font-family:var(--mono);font-size:12px;color:var(--em);display:flex;gap:8px;align-items:center}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--em);animation:p 1.6s infinite}@keyframes p{50%{opacity:.3}}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.k{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:16px}
+.k small{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.k b{display:block;font-family:var(--disp);font-size:32px;margin-top:6px}
+.cols{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.panel{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:18px;overflow:hidden}
+.panel h3{font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:14px;font-weight:600}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+input,select{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--ink);font:inherit;font-size:14px;outline:none}
+select option{background:#14161c}
+.btn{border:0;border-radius:10px;padding:10px 16px;font:600 14px var(--body);cursor:pointer;background:var(--cy);color:#04121a}
+.btn.ghost{background:var(--s2);color:var(--ink)}
+.tbl{overflow:auto;max-height:620px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{position:sticky;top:0;background:#14161c;text-align:left;font-weight:600;color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:10px;cursor:pointer;white-space:nowrap}
+td{padding:10px;border-top:1px solid var(--line);vertical-align:middle}
+.nota{font-family:var(--mono);font-weight:700;padding:3px 9px;border-radius:8px;display:inline-block}
+.n-ok{background:rgba(47,214,154,.15);color:var(--em)}.n-mid{background:rgba(255,181,71,.15);color:var(--am)}.n-bad{background:rgba(255,107,107,.15);color:var(--co)}
+.flag{color:var(--co);font-family:var(--mono);font-size:12px}.clean{color:var(--mut);font-size:12px}
+.q{margin-bottom:12px}.q .t{font-size:13px;line-height:1.35;margin-bottom:5px}.q .t span{font-family:var(--mono);color:var(--am);font-size:11px;display:block}
+.q .b{height:8px;background:var(--s2);border-radius:6px;overflow:hidden}.q .b div{height:100%}
+.q .v{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:3px}
+.dist{display:flex;align-items:flex-end;gap:6px;height:120px;margin-bottom:6px}
+.dist div{flex:1;background:var(--cy);border-radius:6px 6px 0 0;min-height:2px;position:relative}
+.dist div span{position:absolute;top:-18px;left:0;right:0;text-align:center;font:11px var(--mono);color:var(--mut)}
+.dl{display:flex;gap:6px}.dl span{flex:1;text-align:center;font:11px var(--mono);color:var(--mut)}
+#gate{min-height:100vh;display:grid;place-items:center;padding:20px}
+.gbox{width:100%;max-width:380px;background:var(--s1);border:1px solid var(--line);border-radius:20px;padding:28px;text-align:center}
+.gbox img{width:72px;margin-bottom:12px}.gbox input{width:100%;margin:18px 0 10px;text-align:center;font-size:18px}.gbox .btn{width:100%;padding:14px}
+.err{color:var(--co);font-size:13px;min-height:18px;margin-top:8px}
+#qs{max-height:560px;overflow:auto;padding-right:6px}
+.empty{color:var(--mut);padding:30px;text-align:center}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}}
+</style></head><body>
+<div id="gate"><div class="gbox"><img src="assets/escudo-policia.png" alt=""><div class="eyebrow">Acceso docentes</div>
+<h1 style="font-size:24px">Monitor de resultados</h1><input id="key" type="password" placeholder="Clave de docentes" autocomplete="off">
+<button class="btn" id="go">Ingresar</button><div class="err" id="gerr"></div></div></div>
+
+<div class="wrap" id="app" hidden>
+<header><div><div class="eyebrow">IESP · Régimen Penal Juvenil</div><h1>Monitor de la evaluación</h1>
+<div class="sub" id="upd">—</div></div>
+<div style="display:flex;gap:10px;align-items:center"><span class="live"><i></i>ACTUALIZA CADA 20 s</span><button class="btn ghost" id="csv">Descargar CSV</button><button class="btn" id="ref">Actualizar</button></div></header>
+
+<div class="kpis">
+<div class="k"><small>Evaluados</small><b id="kN">0</b></div>
+<div class="k"><small>Promedio</small><b id="kAvg">–</b></div>
+<div class="k"><small>Aprobados (≥ 7)</small><b id="kOk">–</b></div>
+<div class="k"><small>Con salidas</small><b id="kV" style="color:var(--co)">–</b></div>
+<div class="k"><small>Nota más baja</small><b id="kMin">–</b></div>
+</div>
+
+<div class="cols">
+<div class="panel"><h3>Evaluados</h3>
+<div class="filters"><input id="fq" placeholder="Buscar nombre o legajo"><select id="fj"><option value="">Todas las jerarquías</option></select><select id="fd"><option value="">Todos los destinos</option></select><select id="fe"><option value="">Todos</option><option value="ok">Aprobados</option><option value="bad">Desaprobados</option><option value="v">Con salidas</option></select></div>
+<div class="tbl"><table><thead><tr><th data-k="fecha">Hora</th><th data-k="nombre">Nombre</th><th data-k="jerarquia">Jerarquía</th><th data-k="dni">Legajo</th><th data-k="destino">Destino</th><th data-k="aciertos">Aciertos</th><th data-k="nota">Nota</th><th data-k="tiempo">Salidas</th></tr></thead><tbody id="tb"></tbody></table></div></div>
+<div>
+<div class="panel" style="margin-bottom:16px"><h3>Distribución de notas</h3><div class="dist" id="dist"></div><div class="dl"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+<div class="panel"><h3>Situaciones más falladas</h3><div id="qs"><div class="empty">Sin datos por pregunta todavía.</div></div></div>
+</div></div></div>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwc1O1BVgePuNNbIAj4uhxGT2qwM_8cjjsJz7Yx6Ug8Qe2-rfikBW95uNWjUMNlz-T7uw/exec";
+const QMAP={"23:10 · Av. Sarmiento": "Aprehenden en flagrancia a un joven por un arrebato. No tiene DNI y dice tener 18 años, pero por su aspecto podría tener 16. El Cabo propone tratarlo como adulto \"porque él mismo lo declaró\". ¿Qué corresponde?", "Orden de captura": "Se ejecuta una orden de detención contra un joven que hoy tiene 18 años, por un robo que cometió hace cuatro meses, cuando tenía 17. ¿Bajo qué régimen se lo trata?", "18:40 · Barrio Oeste": "En un robo participan dos chicos: uno de 13 años y otro de 16. ¿Cuál es el procedimiento correcto?", "02:15 · Guardia": "No hay móvil disponible para el traslado. El jefe de guardia ordena: \"Tráiganlo un rato a la comisaría, en una oficina separada de los detenidos, hasta que se libere un patrullero\". ¿Cómo debe proceder el oficial?", "Traslado": "El adolescente intentó escapar al momento de la aprehensión, pero ahora está tranquilo y colabora. El Sargento quiere esposarlo para todo el traslado \"por si vuelve a intentarlo\". ¿Qué corresponde?", "21:30 · Plaza": "¿En cuál de estas situaciones está justificado colocarle esposas a un adolescente?", "En el móvil": "Camino al centro asistencial, el adolescente dice: \"Fui yo, lo hice porque me obligaron\". ¿Cómo procede el personal?", "Comunicaciones": "El oficial instructor recibe el procedimiento. ¿Cuál es la comunicación correcta?", "01:00 · Centro asistencial": "Los padres del adolescente no aparecen, pero ya llegó el defensor. ¿Cómo se realiza el examen médico?", "Adolescente mujer": "Aprehenden a una adolescente de 15 años. En el móvil solo hay dos efectivos varones. ¿Qué corresponde?", "Ingreso al CAD": "¿Con qué debe ingresar el adolescente al CAD?", "Secuestros": "Se secuestran el celular robado y un cuchillo. La víctima pide que le devuelvan su teléfono en el lugar. ¿Qué hace el oficial?", "20:05 · Vía pública": "Un vecino filma el procedimiento y un compañero quiere sacarle una foto al adolescente \"para tenerlo identificado en el grupo de la comisaría\". ¿Qué corresponde?", "En el lugar": "La víctima exige que los padres del adolescente le paguen el celular roto en ese momento, y los padres aceptan. ¿Cómo procede el personal?", "Denuncia": "Al hacer la denuncia, la víctima dice que no quiere ningún acuerdo ni mediación con el adolescente. ¿Qué es correcto?", "22:50 · Banda": "Aprehenden juntos a un hombre de 25 años y a un adolescente de 16 por el mismo robo. ¿Qué afirmación es correcta?", "Medida vigente": "Un adolescente con tobillera electrónica y prohibición de acercarse a la víctima es encontrado frente a la casa de ella. ¿Qué corresponde?", "Capacitación": "Un cadete pregunta cómo funciona el supervisor y el PITP. ¿Qué respuesta es correcta?", "Al cierre": "El acta del procedimiento dice: \"Se procedió a la aprehensión del menor, quien manifestó haber robado el celular\". ¿Cuál es el problema?", "03:20 · Ruta 9": "El adolescente aprehendido presenta signos de intoxicación severa: no responde bien y respira con dificultad. ¿Qué corresponde?"};
+const $=id=>document.getElementById(id);let KEY='',rows=[],sortK='fecha',sortD=-1,timer;
+const num=s=>parseFloat(String(s).replace(',','.'))||0;
+const salidas=t=>{const m=String(t).match(/\((\d+)/);return m?+m[1]:0};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function load(){
+  const r=await fetch(`${SCRIPT_URL}?action=list&key=${encodeURIComponent(KEY)}&t=${Date.now()}`);const d=await r.json();
+  if(!d.ok)throw new Error(d.error||'Error');rows=d.rows.filter(x=>x.nombre);render();
+  $('upd').textContent='Última actualización: '+new Date().toLocaleTimeString('es-AR');
+}
+$('go').onclick=async()=>{KEY=$('key').value.trim();$('gerr').textContent='Verificando…';
+  try{await load();try{sessionStorage.setItem('mon_k',KEY)}catch(e){}$('gate').remove();$('app').hidden=false;timer=setInterval(()=>load().catch(()=>{}),20000)}
+  catch(e){$('gerr').textContent=e.message==='Clave incorrecta'?'Clave incorrecta.':'No se pudo conectar. Verificá que el Apps Script esté actualizado.'}};
+$('key').onkeydown=e=>{if(e.key==='Enter')$('go').click()};
+try{const k=sessionStorage.getItem('mon_k');if(k){$('key').value=k;$('go').click()}}catch(e){}
+$('ref').onclick=()=>load().catch(()=>{});
+['fq','fj','fd','fe'].forEach(i=>$(i).oninput=render);
+document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;sortD=sortK===k?-sortD:1;sortK=k;render()});
+function opts(sel,vals){const cur=sel.value,first=sel.options[0].outerHTML;sel.innerHTML=first+[...new Set(vals)].filter(Boolean).sort().map(v=>`<option>${esc(v)}</option>`).join('');sel.value=cur}
+function filtered(){const q=$('fq').value.toLowerCase(),j=$('fj').value,d=$('fd').value,e=$('fe').value;
+  return rows.filter(r=>(!q||(r.nombre+' '+r.dni).toLowerCase().includes(q))&&(!j||r.jerarquia===j)&&(!d||r.destino===d)&&(!e||(e==='ok'?num(r.nota)>=7:e==='bad'?num(r.nota)<7:salidas(r.tiempo)>0)))}
+function render(){
+  opts($('fj'),rows.map(r=>r.jerarquia));opts($('fd'),rows.map(r=>r.destino));
+  const f=filtered(),n=f.length,notas=f.map(r=>num(r.nota));
+  $('kN').textContent=n;$('kAvg').textContent=n?(notas.reduce((a,b)=>a+b,0)/n).toFixed(2).replace('.',','):'–';
+  $('kOk').textContent=n?Math.round(notas.filter(x=>x>=7).length/n*100)+'%':'–';
+  $('kV').textContent=n?f.filter(r=>salidas(r.tiempo)>0).length:'–';$('kMin').textContent=n?Math.min(...notas).toFixed(2).replace('.',','):'–';
+  const s=f.slice().sort((a,b)=>{const x=sortK==='nota'?num(a.nota)-num(b.nota):sortK==='tiempo'?salidas(a.tiempo)-salidas(b.tiempo):String(a[sortK]).localeCompare(String(b[sortK]),'es',{numeric:true});return x*sortD});
+  $('tb').innerHTML=s.length?s.map(r=>{const v=num(r.nota),c=v>=7?'n-ok':v>=5?'n-mid':'n-bad',sl=salidas(r.tiempo);
+    return `<tr><td style="font-family:var(--mono);font-size:12px;color:var(--mut)">${esc(r.fecha)}</td><td>${esc(r.nombre)}</td><td>${esc(r.jerarquia)}</td><td>${esc(r.dni)}</td><td>${esc(r.destino)}</td><td style="font-family:var(--mono)">${esc(r.aciertos)}</td><td><span class="nota ${c}">${esc(r.nota)}</span></td><td>${sl?`<span class="flag">⚠ ${sl}</span>`:'<span class="clean">—</span>'}</td></tr>`}).join(''):'<tr><td colspan="8" class="empty">Todavía no hay resultados.</td></tr>';
+  const b=Array(10).fill(0);notas.forEach(x=>b[Math.min(9,Math.max(0,Math.floor(x)-1))]++);const mx=Math.max(1,...b);
+  $('dist').innerHTML=b.map((c,i)=>`<div style="height:${c/mx*100}%;background:${i>=6?'var(--em)':i>=4?'var(--am)':'var(--co)'}"><span>${c||''}</span></div>`).join('');
+  const st={};f.forEach(r=>String(r.detalle||'').split('|').forEach(p=>{const i=p.lastIndexOf(':');if(i<0)return;const t=p.slice(0,i),v=p.slice(i+1);st[t]=st[t]||{ok:0,n:0};st[t].n++;if(v==='1')st[t].ok++}));
+  const l=Object.entries(st).map(([t,o])=>({t,fail:1-o.ok/o.n,n:o.n})).sort((a,b)=>b.fail-a.fail);
+  $('qs').innerHTML=l.length?l.map(x=>{const p=Math.round(x.fail*100),c=p>=50?'var(--co)':p>=30?'var(--am)':'var(--em)';
+    return `<div class="q"><div class="t"><span>${esc(x.t)}</span>${esc((QMAP[x.t]||'').slice(0,110))}…</div><div class="b"><div style="width:${p}%;background:${c}"></div></div><div class="v">${p}% falló · ${x.n} respuestas</div></div>`}).join(''):'<div class="empty">Sin datos por pregunta todavía.</div>';
+}
+$('csv').onclick=()=>{const k=['fecha','nombre','jerarquia','dni','destino','aciertos','nota','tiempo'];
+  const t=[k.join(';')].concat(filtered().map(r=>k.map(x=>'"'+String(r[x]??'').replace(/"/g,'""')+'"').join(';'))).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+t],{type:'text/csv'}));a.download='resultados-evaluacion-rpj.csv';a.click()};
+</script></body></html>

@@ -76,6 +76,12 @@ select option{background:#14161c}
 .pbox p{color:#e7c9cc;line-height:1.5}
 .pbox .btn{background:var(--co);color:#1a0406;margin-top:22px}
 @media(max-width:640px){.grid,.rules{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}.hero img{width:70px}}
+.disert{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 4px}
+.disert .dl{grid-column:1/-1;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.disert .dp{background:var(--s1);border:1px solid var(--line);border-left:3px solid var(--cy);border-radius:12px;padding:10px 14px}
+.disert .dp b{display:block;font-size:15px}.disert .dp span{font-size:12px;color:var(--cy)}
+.endbox{margin-top:30px;padding-top:10px;border-top:1px solid var(--line)}.endbox p{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:14px;text-align:center;letter-spacing:.06em}
+@media(max-width:640px){.disert{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -91,6 +97,7 @@ select option{background:#14161c}
     </div>
   </div>
   <p class="lead">Veinte situaciones reales de servicio. En cada una tenés que decidir cómo actuar según la Ley 27.801, la Ley 10.011 y el CPP de Tucumán.</p>
+  <div class="disert"><span class="dl">Disertantes</span><div class="dp"><b>Celestina T. Aira</b><span>Comisario · Abogada</span></div><div class="dp"><b>Julio Rodríguez</b><span>Comisario · Abogado</span></div><div class="dp"><b>Sergio E. Ponce</b><span>Oficial Auxiliar</span></div></div>
   <div class="rules">
     <div class="rule"><b>20</b><span>situaciones, una por pantalla. No se puede volver atrás.</span></div>
     <div class="rule"><b>1–10</b><span>nota final. Al terminar ves cada respuesta con su fundamento.</span></div>
@@ -133,6 +140,7 @@ select option{background:#14161c}
     <div><div class="verdict" id="verdict"></div><div class="lead" id="scoreDetails"></div><div class="sent" id="sentState">Enviando resultado…</div></div>
   </div>
   <div class="fb" id="feedbackContainer"></div>
+  <div class="endbox"><div class="disert"><span class="dl">Disertantes</span><div class="dp"><b>Celestina T. Aira</b><span>Comisario · Abogada</span></div><div class="dp"><b>Julio Rodríguez</b><span>Comisario · Abogado</span></div><div class="dp"><b>Sergio E. Ponce</b><span>Oficial Auxiliar</span></div></div><p>Curso de capacitación · Régimen Penal Juvenil · Policía de Tucumán · IESP</p></div>
 </section>
 </div>
 

@@ -53,7 +53,7 @@ td{padding:10px;border-top:1px solid var(--line);vertical-align:middle}
 <div class="wrap" id="app" hidden>
 <header><div><div class="eyebrow">IESP · Régimen Penal Juvenil</div><h1>Monitor de la evaluación</h1>
 <div class="sub" id="upd">—</div></div>
-<div style="display:flex;gap:10px;align-items:center"><span class="live"><i></i>ACTUALIZA CADA 20 s</span><button class="btn ghost" id="csv">Descargar CSV</button><button class="btn" id="ref">Actualizar</button></div></header>
+<div style="display:flex;gap:10px;align-items:center"><span class="live"><i></i>ACTUALIZA CADA 20 s</span><button class="btn ghost" id="pdf">Informe PDF</button><button class="btn" id="ref">Actualizar</button></div></header>
 
 <div class="kpis">
 <div class="k"><small>Evaluados</small><b id="kN">0</b></div>
@@ -123,7 +123,46 @@ function render(){
   $('qs').innerHTML=l.length?l.map(x=>{const p=Math.round(x.fail*100),c=p>=50?'var(--co)':p>=30?'var(--am)':'var(--em)';
     return `<div class="q"><div class="t"><span>${esc(x.t)}</span>${esc((QMAP[x.t]||'').slice(0,110))}…</div><div class="b"><div style="width:${p}%;background:${c}"></div></div><div class="v">${p}% falló · ${x.n} respuestas</div></div>`}).join(''):'<div class="empty">Sin datos por pregunta todavía.</div>';
 }
-$('csv').onclick=()=>{const k=['fecha','nombre','jerarquia','dni','destino','aciertos','nota','tiempo'];
-  const t=[k.join(';')].concat(filtered().map(r=>k.map(x=>'"'+String(r[x]??'').replace(/"/g,'""')+'"').join(';'))).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+t],{type:'text/csv'}));a.download='resultados-evaluacion-rpj.csv';a.click()};
+$('pdf').onclick=()=>{
+  const f=filtered(),n=f.length;if(!n){alert('No hay resultados para el informe.');return}
+  const notas=f.map(r=>num(r.nota)),avg=notas.reduce((a,b)=>a+b,0)/n,ap=notas.filter(x=>x>=7).length,vs=f.filter(r=>salidas(r.tiempo)>0).length;
+  const fx=v=>v.toFixed(2).replace('.',',');
+  const filt=[$('fj').value&&('Jerarquía: '+$('fj').value),$('fd').value&&('Destino: '+$('fd').value),$('fe').value&&('Estado: '+$('fe').selectedOptions[0].text),$('fq').value&&('Búsqueda: '+$('fq').value)].filter(Boolean).join(' · ')||'Todos los evaluados';
+  const b=Array(10).fill(0);notas.forEach(x=>b[Math.min(9,Math.max(0,Math.floor(x)-1))]++);const mx=Math.max(1,...b);
+  const st={};f.forEach(r=>String(r.detalle||'').split('|').forEach(p=>{const i=p.lastIndexOf(':');if(i<0)return;const t=p.slice(0,i),v=p.slice(i+1);st[t]=st[t]||{ok:0,n:0};st[t].n++;if(v==='1')st[t].ok++}));
+  const qs=Object.entries(st).map(([t,o])=>({t,p:Math.round((1-o.ok/o.n)*100),n:o.n})).sort((a,b)=>b.p-a.p);
+  const rows=f.slice().sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre),'es'));
+  const now=new Date().toLocaleString('es-AR',{timeZone:'America/Argentina/Tucuman',dateStyle:'long',timeStyle:'short'});
+  const logo=new URL('assets/escudo-policia.png',location.href).href;
+  const col=v=>v>=7?'#0c8a5f':v>=5?'#b9770e':'#c43a3a';
+  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Informe de resultados · Evaluación Régimen Penal Juvenil</title>
+<style>@page{size:A4;margin:14mm 13mm}*{box-sizing:border-box;margin:0}body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#141a24;font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.hd{display:flex;gap:14px;align-items:center;border-bottom:2px solid #0b1b2b;padding-bottom:10px}.hd img{width:54px}.hd small{font:700 8pt ui-monospace,Menlo,monospace;letter-spacing:.14em;color:#0a74a8;text-transform:uppercase}
+h1{font-size:19pt;letter-spacing:-.02em;color:#0b1b2b;margin:2px 0}.meta{font-size:8.5pt;color:#5b6474}
+h2{font-size:11.5pt;color:#0b1b2b;margin:16px 0 7px;text-transform:uppercase;letter-spacing:.06em}
+.k{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:12px}.k div{background:#f3f6fa;border-radius:8px;padding:9px 10px}.k small{font-size:7.5pt;color:#5b6474;text-transform:uppercase;letter-spacing:.06em}.k b{display:block;font-size:15pt;color:#0b1b2b;white-space:nowrap}
+.two{display:grid;grid-template-columns:1fr 1.25fr;gap:14px}
+.dist{display:flex;align-items:flex-end;gap:5px;height:90px;border-bottom:1px solid #dfe4ec}.dist div{flex:1;border-radius:4px 4px 0 0;position:relative;min-height:1px}.dist span{position:absolute;top:-14px;left:0;right:0;text-align:center;font-size:7.5pt;color:#5b6474}
+.dl{display:flex;gap:5px}.dl span{flex:1;text-align:center;font-size:7.5pt;color:#5b6474;padding-top:3px}
+.q{display:grid;grid-template-columns:1fr 46px;gap:6px;align-items:center;margin-bottom:5px;font-size:8.5pt}.q .b{height:6px;background:#eef1f5;border-radius:4px;overflow:hidden;margin-top:2px}.q .b i{display:block;height:100%}.q em{font-style:normal;font-weight:700;text-align:right}
+table{width:100%;border-collapse:collapse;font-size:8.6pt}th{text-align:left;font-size:7.3pt;text-transform:uppercase;letter-spacing:.06em;color:#5b6474;border-bottom:1.5px solid #0b1b2b;padding:5px 5px}td{padding:5px 5px;border-bottom:1px solid #e6eaf0}tr{break-inside:avoid}
+.n{font-weight:800}.sal{color:#c43a3a;font-weight:700}
+.sig{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px;break-inside:avoid}.sig div{border-top:1px solid #141a24;padding-top:5px;text-align:center;font-size:8.5pt}.sig b{display:block;font-size:9.5pt}
+.ft{margin-top:14px;font-size:7.5pt;color:#98a1b0;text-align:center}
+.tip{position:fixed;top:0;left:0;right:0;background:#0b1b2b;color:#fff;padding:10px;text-align:center;font-size:10pt}@media print{.tip{display:none}}</style></head><body>
+<div class="tip">Para guardar: en el cuadro de impresión elegí <b>“Guardar como PDF”</b>.</div>
+<div class="hd"><img src="${logo}" alt=""><div><small>Policía de Tucumán · IESP</small><h1>Informe de resultados · Evaluación Régimen Penal Juvenil</h1><div class="meta">Ley 27.801 · Ley 10.011 · CPP Tucumán — Emitido el ${esc(now)} — ${esc(filt)}</div></div></div>
+<div class="k"><div><small>Evaluados</small><b>${n}</b></div><div><small>Promedio</small><b>${fx(avg)}</b></div><div><small>Aprobados (≥7)</small><b>${ap} · ${Math.round(ap/n*100)}%</b></div><div><small>Con salidas</small><b style="color:#c43a3a">${vs}</b></div><div><small>Nota mín. / máx.</small><b>${fx(Math.min(...notas))} / ${fx(Math.max(...notas))}</b></div></div>
+<div class="two"><div><h2>Distribución de notas</h2><div class="dist" style="margin-top:18px">${b.map((c,i)=>`<div style="height:${c/mx*100}%;background:${i>=6?'#0c8a5f':i>=4?'#e0a23a':'#c43a3a'}"><span>${c||''}</span></div>`).join('')}</div><div class="dl">${b.map((_,i)=>`<span>${i+1}</span>`).join('')}</div></div>
+<div><h2>Situaciones más falladas</h2>${qs.length?qs.slice(0,8).map(x=>`<div class="q"><div>${esc(x.t)} — ${esc((QMAP[x.t]||'').slice(0,70))}…<div class="b"><i style="width:${x.p}%;background:${x.p>=50?'#c43a3a':x.p>=30?'#e0a23a':'#0c8a5f'}"></i></div></div><em>${x.p}%</em></div>`).join(''):'<p class="meta">Sin detalle por pregunta.</p>'}</div></div>
+<h2>Detalle por evaluado</h2><table><thead><tr><th>#</th><th>Apellido y nombre</th><th>Jerarquía</th><th>Legajo</th><th>Destino</th><th>Aciertos</th><th>Nota</th><th>Salidas</th><th>Resultado</th></tr></thead><tbody>
+${rows.map((r,i)=>{const v=num(r.nota),sl=salidas(r.tiempo);return `<tr><td>${i+1}</td><td>${esc(r.nombre)}</td><td>${esc(r.jerarquia)}</td><td>${esc(r.dni)}</td><td>${esc(r.destino)}</td><td>${esc(r.aciertos)}</td><td class="n" style="color:${col(v)}">${esc(r.nota)}</td><td>${sl?`<span class="sal">${sl}</span>`:'—'}</td><td style="color:${col(v)};font-weight:700">${v>=7?'Aprobado':'Desaprobado'}</td></tr>`}).join('')}
+</tbody></table>
+<div class="sig"><div><b>Celestina T. Aira</b>Comisario · Abogada</div><div><b>Julio Rodríguez</b>Comisario · Abogado</div><div><b>Sergio E. Ponce</b>Oficial Auxiliar</div></div>
+<div class="ft">Curso de capacitación · Régimen Penal Juvenil y actuación policial · Policía de Tucumán · IESP</div>
+<script>window.onload=()=>setTimeout(()=>window.print(),400)<\/script></body></html>`;
+  const w=window.open('','_blank');
+  if(!w){alert('Permití las ventanas emergentes para generar el informe.');return}
+  w.document.open();w.document.write(html);w.document.close();
+};
 </script></body></html>

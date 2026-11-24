@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Evaluación de aplicación · Régimen Penal Juvenil · Ley 27.801</title>
+<title>Evaluación para oficiales sumariantes · Régimen Penal Juvenil · Ley 27.801</title>
 <style>
 :root{--bg:#0b0c10;--s1:rgba(255,255,255,.045);--s2:rgba(255,255,255,.08);--line:rgba(255,255,255,.10);--ink:#eef1f6;--mut:#9aa3b2;--cy:#3fd0ff;--co:#ff6b6b;--em:#2fd69a;--am:#ffb547;
 --disp:"Archivo","Arial Black",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
@@ -53,6 +53,8 @@ select option{background:#14161c}
 .foot{display:flex;justify-content:flex-end;margin-top:22px}
 .warnline{font-size:13px;color:var(--mut);margin-top:14px;text-align:center}
 .warnline b{color:var(--co)}
+.caso{border:1px solid rgba(63,208,255,.3);background:rgba(63,208,255,.06);border-radius:14px;padding:14px 16px;margin-bottom:16px}.caso b{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--cy);margin-bottom:6px}.caso p{font-size:15px;line-height:1.5;color:var(--ink);opacity:.9}
+.fbi .cs{font-family:var(--mono);font-size:11px;color:var(--cy);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 /* results */
 .score{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
 .ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c,var(--cy)) calc(var(--p)*1%),var(--s2) 0)}
@@ -93,13 +95,13 @@ select option{background:#14161c}
     <img src="assets/escudo-policia.png" alt="Policía de Tucumán">
     <div>
       <div class="eyebrow">IESP · Policía de Tucumán</div>
-      <h1>Régimen Penal Juvenil<br><em>Evaluación de aplicación</em></h1>
+      <h1>Régimen Penal Juvenil<br><em>Oficiales sumariantes</em></h1>
     </div>
   </div>
-  <p class="lead">Veinte situaciones reales de servicio. En cada una tenés que decidir cómo actuar según la Ley 27.801, la Ley 10.011 y el CPP de Tucumán.</p>
+  <p class="lead">Cuatro casos que avanzan paso a paso. En cada momento usted es el oficial sumariante y responsable de la causa: decide qué dispone, qué controla y qué deja asentado, según la Ley 27.801, la Ley 10.011 y el CPP de Tucumán.</p>
   <div class="disert"><span class="dl">Disertantes</span><div class="dp"><b>Celestina T. Aira</b><span>Comisario · Abogada</span></div><div class="dp"><b>Julio Rodríguez</b><span>Comisario · Abogado</span></div><div class="dp"><b>Sergio E. Ponce</b><span>Oficial Auxiliar</span></div></div>
   <div class="rules">
-    <div class="rule"><b>20</b><span>situaciones, una por pantalla. No se puede volver atrás.</span></div>
+    <div class="rule"><b>4 × 5</b><span>cuatro casos con cinco decisiones cada uno. No se puede volver atrás.</span></div>
     <div class="rule"><b>1–10</b><span>nota final. Al terminar ves cada respuesta con su fundamento.</span></div>
     <div class="rule warn"><b>!</b><span>Si salís de la pantalla o cambiás de aplicación, la pregunta en curso se anula como incorrecta.</span></div>
   </div>
@@ -109,9 +111,6 @@ select option{background:#14161c}
       <div><label for="jerarquia">Jerarquía</label>
         <select id="jerarquia">
           <option value="">Seleccione jerarquía...</option>
-          <optgroup label="Cadetes"><option>Cadete de 1.er año</option><option>Cadete de 2.º año</option><option>Cadete de 3.er año</option></optgroup>
-          <optgroup label="Personal Transitorio Policial"><option value="P.T.P">P.T.P (Personal Transitorio Policial)</option></optgroup>
-          <optgroup label="Suboficiales"><option>Agente</option><option>Cabo</option><option>Cabo Primero</option><option>Sargento</option><option>Sargento Primero</option><option>Sargento Ayudante</option><option>Suboficial Principal</option><option>Suboficial Mayor</option></optgroup>
           <optgroup label="Oficiales"><option>Oficial Subayudante</option><option>Oficial Ayudante</option><option>Oficial Auxiliar</option><option>Oficial Principal</option><option>Subcomisario</option><option>Comisario</option><option>Comisario Principal</option><option>Comisario Inspector</option><option>Comisario Mayor</option><option>Comisario General</option></optgroup>
         </select></div>
       <div><label for="dni">Legajo</label><input id="dni" inputmode="numeric" autocomplete="off" placeholder="N.º de legajo"></div>
@@ -126,6 +125,7 @@ select option{background:#14161c}
 <section id="screenExam" class="screen">
   <div class="top"><span class="live"><i></i>SUPERVISIÓN ACTIVA</span><span class="count" id="stepCounter"></span></div>
   <div class="bar"><div id="progress"></div></div>
+  <div class="caso" id="casoBox"><b id="casoT"></b><p id="casoR"></p></div>
   <div class="scene" id="sceneTag"></div>
   <div class="qtext" id="questionText"></div>
   <div class="opts" id="optionsContainer"></div>
@@ -141,7 +141,7 @@ select option{background:#14161c}
     <div><div class="verdict" id="verdict"></div><div class="lead" id="scoreDetails"></div><div class="sent" id="sentState">Enviando resultado…</div></div>
   </div>
   <div class="fb" id="feedbackContainer"></div>
-  <div class="endbox"><div class="disert"><span class="dl">Disertantes</span><div class="dp"><b>Celestina T. Aira</b><span>Comisario · Abogada</span></div><div class="dp"><b>Julio Rodríguez</b><span>Comisario · Abogado</span></div><div class="dp"><b>Sergio E. Ponce</b><span>Oficial Auxiliar</span></div></div><p>Curso de capacitación · Régimen Penal Juvenil · Policía de Tucumán · IESP</p></div>
+  <div class="endbox"><div class="disert"><span class="dl">Disertantes</span><div class="dp"><b>Celestina T. Aira</b><span>Comisario · Abogada</span></div><div class="dp"><b>Julio Rodríguez</b><span>Comisario · Abogado</span></div><div class="dp"><b>Sergio E. Ponce</b><span>Oficial Auxiliar</span></div></div><p>Curso de capacitación · Régimen Penal Juvenil · Oficiales sumariantes · Policía de Tucumán · IESP</p></div>
 </section>
 </div>
 
@@ -151,75 +151,81 @@ select option{background:#14161c}
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6xzq4gm3hsjzTrEuNRo79hQch7yyMSSsaTc_St4kSD9BPWBPt99Y-PCfAgHL7_BogBA/exec";
+const CASOS={
+C1:{t:"Caso 1 · Robo con participación de un adulto",r:"22:50 h. Un móvil llega a la dependencia con un hombre de 25 años y un adolescente de 16, aprehendidos en flagrancia por el robo de un celular con un cuchillo. El Cabo que hizo el procedimiento le entrega a usted las actuaciones: es el oficial sumariante y responsable de la causa."},
+C2:{t:"Caso 2 · Edad dudosa e intoxicación",r:"03:20 h, Ruta 9. Personal de calle aprehende a un joven por un arrebato. No tiene DNI, dice tener 18 años, pero por su aspecto podría tener 16. Intentó escapar, está agitado y muestra signos de haber consumido sustancias. Usted toma el procedimiento como sumariante."},
+C3:{t:"Caso 3 · Adolescente mujer y la víctima",r:"20:05 h. En un comercio aprehenden a una adolescente de 15 años por un hurto. En el lugar hay dos efectivos varones, un vecino filma y el comerciante, enojado, exige que le paguen. Usted queda a cargo de las actuaciones."},
+C4:{t:"Caso 4 · Órdenes judiciales y medidas vigentes",r:"Durante su turno como sumariante llegan órdenes del Juzgado de Menores y novedades sobre adolescentes con medidas en curso. Usted debe cumplirlas y documentarlas."}
+};
 const questions=[
-{tag:"23:10 · Av. Sarmiento",q:"Aprehenden en flagrancia a un joven por un arrebato. No tiene DNI y dice tener 18 años, pero por su aspecto podría tener 16. El Cabo propone tratarlo como adulto \"porque él mismo lo declaró\". ¿Qué corresponde?",
- o:["Tratarlo como adulto y dejar asentado en el acta que él mismo declaró su edad.","Tratarlo como menor hasta que se acredite la edad, y seguir la ruta del adolescente.","Trasladarlo a la comisaría hasta que la familia acerque el DNI y recién ahí definir.","No actuar: sin edad acreditada no puede aplicarse ningún régimen."],c:1,
- e:"Rige la presunción de minoridad: si la edad no se puede acreditar, se lo trata como menor (art. 2 Ley 27.801 · art. 393 CPP). Lo que declare el joven no alcanza."},
-{tag:"Orden de captura",q:"Se ejecuta una orden de detención contra un joven que hoy tiene 18 años, por un robo que cometió hace cuatro meses, cuando tenía 17. ¿Bajo qué régimen se lo trata?",
- o:["Régimen de adultos, porque al momento de la detención ya es mayor de edad.","Régimen de adultos, salvo que el juez disponga expresamente lo contrario.","Régimen penal juvenil, porque cuenta la edad del momento del hecho.","Régimen mixto: adultos para el alojamiento, juvenil para el juicio."],c:2,
- e:"La edad que define el régimen es la del momento del hecho (arts. 1 y 2 Ley 27.801 · art. 393 CPP). Debe asentarse la fecha de nacimiento y la fecha del hecho."},
-{tag:"18:40 · Barrio Oeste",q:"En un robo participan dos chicos: uno de 13 años y otro de 16. ¿Cuál es el procedimiento correcto?",
- o:["Ambos siguen la ruta del adolescente: centro asistencial y CAD.","El de 13 no es punible, pero el hecho se investiga; el de 16 sigue la ruta del proceso penal juvenil.","El de 13 se entrega a sus padres sin actuaciones; el de 16 va a la comisaría hasta la audiencia.","Ninguno es punible si no hay un adulto involucrado en el hecho."],c:1,
- e:"Menores de 14 quedan fuera del régimen penal (art. 1 Ley 27.801), pero el hecho se investiga y se da intervención al fiscal y a la protección de derechos. El de 16 es punible y sigue la ruta: centro asistencial y CAD."},
-{tag:"02:15 · Guardia",q:"No hay móvil disponible para el traslado. El jefe de guardia ordena: \"Tráiganlo un rato a la comisaría, en una oficina separada de los detenidos, hasta que se libere un patrullero\". ¿Cómo debe proceder el oficial?",
- o:["Cumplir la orden, porque la oficina está separada de los adultos y es transitorio.","Cumplir la orden por no más de dos horas, dejando constancia en el libro de guardia.","Cumplir la orden solo si los padres del adolescente lo autorizan por escrito.","No ingresarlo a la dependencia: gestionar el traslado al centro asistencial y al CAD, y dejar constancia de la demora."],c:3,
- e:"Está prohibido alojar adolescentes en comisarías o dependencias policiales, aunque sea por un rato o en una oficina separada (art. 402 inc. 9 CPP · art. 5 inc. k Ley 27.801)."},
-{tag:"Traslado",q:"El adolescente intentó escapar al momento de la aprehensión, pero ahora está tranquilo y colabora. El Sargento quiere esposarlo para todo el traslado \"por si vuelve a intentarlo\". ¿Qué corresponde?",
- o:["Esposarlo, porque el intento de fuga previo justifica la medida por sí solo.","Precinto, evaluando su comportamiento y su condición; esposas solo si corre peligro la vida del adolescente o de terceros.","No aplicar ninguna sujeción, porque está prohibida cualquier restricción a menores.","Esposarlo solo durante el viaje en el móvil y retirarlas al llegar al CAD."],c:1,
- e:"La sujeción se gradúa: precinto como regla, evaluando la conducta y la condición; esposas como última instancia, solo si corre peligro la vida del adolescente o de terceros (art. 5 inc. b Ley 27.801 · directivas de Jefatura)."},
-{tag:"21:30 · Plaza",q:"¿En cuál de estas situaciones está justificado colocarle esposas a un adolescente?",
- o:["Insulta y amenaza verbalmente al personal durante la aprehensión.","Es de contextura física mayor que la de los efectivos presentes.","Saca un cuchillo y lo blande contra un transeúnte: hay peligro para la vida de un tercero.","El procedimiento se realiza de noche en una zona considerada peligrosa."],c:2,
- e:"Las esposas son la última instancia: solo si corre peligro la vida del adolescente o de terceros, para asegurar el control de la persona. Debe fundamentarse en el acta (art. 5 inc. b Ley 27.801)."},
-{tag:"En el móvil",q:"Camino al centro asistencial, el adolescente dice: \"Fui yo, lo hice porque me obligaron\". ¿Cómo procede el personal?",
- o:["Lo interrumpe con respeto, le recuerda que tiene derecho a no declarar y no asienta sus dichos como declaración.","Transcribe textualmente sus dichos como \"manifestación espontánea\", porque no fue interrogado.","Le pide más detalles sobre quién lo obligó, porque es información útil para el fiscal.","Lo graba con el celular para preservar la prueba sin necesidad de transcribirla."],c:0,
- e:"No se toma ninguna declaración, ni espontánea ni de ningún tipo. Solo declara ante el fiscal y con su defensor (art. 5 inc. c Ley 27.801). En el acta solo consta que se le informaron sus derechos."},
-{tag:"Comunicaciones",q:"El oficial instructor recibe el procedimiento. ¿Cuál es la comunicación correcta?",
- o:["Solo al fiscal de turno, que se encarga de avisar a los demás organismos.","Directamente al Juez de Menores y al CAD, que coordinan el resto.","Al supervisor de turno, que avisa al Juez de Menores, y además al MPF, al Ministerio Pupilar, a los padres y al defensor.","A la comisaría de la jurisdicción y a los padres, que deciden si convocan un abogado."],c:2,
- e:"Ruta de comunicaciones: supervisor de turno (que avisa al Juez de Menores), MPF Tucumán, Ministerio Pupilar, padres o responsables y defensor, con constancia de hora y destinatario (directivas de Jefatura · art. 5 incs. c, l y n Ley 27.801)."},
-{tag:"01:00 · Centro asistencial",q:"Los padres del adolescente no aparecen, pero ya llegó el defensor. ¿Cómo se realiza el examen médico?",
- o:["Se espera a los padres en la comisaría y recién después se hace el examen.","Lo hace el médico policial en la dependencia, sin necesidad de acompañantes.","Se omite si no hay lesiones visibles, para no demorar el ingreso al CAD.","En el centro asistencial público, con el pedido médico y en presencia del defensor. El informe acompaña el ingreso al CAD."],c:3,
- e:"El examen se hace en el centro asistencial público, con un pedido médico, acompañado de los padres o del defensor. El informe del médico acompaña el ingreso al CAD (directivas de Jefatura)."},
-{tag:"Adolescente mujer",q:"Aprehenden a una adolescente de 15 años. En el móvil solo hay dos efectivos varones. ¿Qué corresponde?",
- o:["Pedir personal femenino para la requisa, la custodia, el traslado y el ingreso al CAD.","Hacer la requisa con un efectivo varón y un testigo, y dejar constancia en el acta.","Trasladarla igual con los dos efectivos y dejar constancia de la falta de personal femenino.","Pedirle a la madre que realice la requisa en el lugar del hecho."],c:0,
+{c:"C1",tag:"C1·Recepción",q:"El Cabo trajo a los dos en el mismo móvil y propone bajarlos juntos a la guardia \"hasta que se arme todo\". ¿Qué dispone usted?",
+ o:["Que bajen ambos a la guardia, en celdas separadas, mientras se arman las actuaciones.","Que el adolescente no ingrese a la dependencia: sigue la ruta al centro asistencial y al CAD; el adulto sigue el circuito de adultos. En el acta deja constancia de que fueron trasladados juntos.","Que el adolescente espere en una oficina, separado de los detenidos, hasta que lleguen los padres.","Que ambos sigan juntos hasta el CAD, porque el hecho es uno solo."],k:1,
+ e:"Separación física absoluta y prohibición de alojar adolescentes en dependencias policiales, aunque sea transitorio (art. 5 inc. k Ley 27.801 · art. 402 inc. 9 CPP). Como responsable de la causa, deja asentada la irregularidad del traslado conjunto."},
+{c:"C1",tag:"C1·Encuadre",q:"Al organizar las actuaciones, ¿cómo documenta la intervención de cada uno?",
+ o:["El adolescente pasa a la justicia de adultos porque el hecho lo cometió con un mayor.","Un solo sumario con las mismas comunicaciones para ambos, para no duplicar trabajo.","Documenta las dos aprehensiones y asienta la participación del adulto. Para el adolescente aplica la ruta propia (derechos, comunicaciones, examen médico, CAD, reserva de identidad). El Juez de NNyA interviene aunque participe un adulto.","Solo documenta al adulto; al adolescente lo entrega a los padres con un acta de entrega."],k:2,
+ e:"La participación del adulto agrava su situación (art. 41 quater CP) y no saca al adolescente de su régimen: el Juez de NNyA interviene aunque participe un adulto (art. 60 LOPJ · art. 5 Ley 27.801)."},
+{c:"C1",tag:"C1·Comunicaciones",q:"¿A quién comunica usted la aprehensión del adolescente y cómo lo documenta?",
+ o:["Al fiscal de turno; él se encarga de avisar a los demás organismos.","Al supervisor de turno (que avisa al Juez de Menores), al MPF, al Ministerio Pupilar, a los padres o responsables y al defensor. Asienta la hora y el destinatario de cada aviso.","Al Juez de Menores y al CAD, por teléfono, sin necesidad de dejarlo asentado.","A los padres, que deciden si convocan a un defensor, y después al fiscal."],k:1,
+ e:"Ruta de comunicaciones de las directivas de Jefatura: supervisor de turno (avisa al Juez de Menores), MPF, Ministerio Pupilar, padres o responsables y defensor, con constancia de hora y destinatario (art. 5 incs. c, l y n Ley 27.801)."},
+{c:"C1",tag:"C1·Control del acta",q:"El acta del Cabo dice: \"El menor manifestó espontáneamente que el cuchillo era del mayor\". ¿Qué hace usted como responsable de la causa?",
+ o:["La deja así, porque una manifestación espontánea no es una declaración.","La firma, pero agrega que el adolescente fue informado de sus derechos.","Le pide al adolescente que lo repita delante de testigos para darle validez.","No incorpora los dichos del adolescente: el acta describe lo que vio el personal (hora, lugar, secuestros, derechos informados, avisos). Si alguien tiene información, la aporta al fiscal."],k:3,
+ e:"El adolescente no declara ante la policía, ni de forma espontánea: solo ante el fiscal y con su defensor (art. 5 inc. c Ley 27.801). Asentar sus dichos puede hacer caer la causa."},
+{c:"C1",tag:"C1·Secuestros",q:"Se secuestraron el celular y el cuchillo. La víctima llega a la dependencia y pide que le devuelvan el teléfono. ¿Qué corresponde?",
+ o:["Devolverlo con un acta de entrega, porque la víctima acredita que es suyo.","Acta de secuestro con cadena de custodia y entrega inmediata al MPF. La devolución solo procede con orden del fiscal, y se le informa así a la víctima.","Guardar los objetos en la dependencia hasta que el fiscal los pida.","Entregar los objetos en el CAD junto con el adolescente."],k:1,
+ e:"Los secuestros se documentan con acta y cadena de custodia y se entregan de inmediato al MPF; la devolución solo con orden del fiscal (directivas de Jefatura). La víctima es informada y oída (art. 396 CPP)."},
+{c:"C2",tag:"C2·Edad",q:"El personal propone tratarlo como adulto \"porque él mismo dijo que tiene 18\". ¿Qué resuelve usted?",
+ o:["Tratarlo como adulto y asentar que él declaró su edad.","Dejarlo en la dependencia hasta que la familia traiga el DNI.","Tratarlo como adolescente hasta que la edad se acredite, aplicar la ruta completa y asentar en el acta qué medios se usaron para establecer la edad.","No intervenir hasta acreditar la edad, porque sin ese dato no se puede aplicar ningún régimen."],k:2,
+ e:"Presunción de minoridad: si la edad no está acreditada, se lo trata como menor (art. 2 Ley 27.801 · art. 393 CPP). Lo que declare el joven no alcanza."},
+{c:"C2",tag:"C2·Salud",q:"El joven empieza a responder mal y respira con dificultad. ¿Qué dispone?",
+ o:["Prioridad médica: 107 o centro asistencial público, custodia sin interferir en la atención, y comunicaciones. Al CAD solo con el alta médica. Todo con horario en el acta.","Llevarlo al CAD, donde hay profesionales que lo pueden atender.","Esperar en la dependencia a que se le pase el efecto y después trasladarlo.","Esposarlo para que no se lastime y seguir con el traslado."],k:0,
+ e:"Ante una intoxicación, primero la salud: 107 o centro asistencial público, custodia sin obstaculizar, y al CAD con el alta médica (arts. 5 inc. b y 35 Ley 27.801)."},
+{c:"C2",tag:"C2·Sujeción",q:"Como intentó escapar, el Sargento quiere llevarlo esposado todo el tiempo. ¿Qué decide y qué asienta?",
+ o:["Esposas durante todo el procedimiento: el intento de fuga lo justifica por sí solo.","Ninguna sujeción, porque está prohibida con menores de edad.","Esposas solo en el móvil, y sin dejarlo asentado porque es una medida de rutina.","Precinto como regla, evaluando su conducta y su estado de salud; esposas solo si corre peligro la vida del joven o de terceros. La medida y su motivo se fundamentan en el acta."],k:3,
+ e:"La sujeción se gradúa: precinto como regla, esposas como última instancia ante peligro para la vida, siempre fundamentado (art. 5 inc. b Ley 27.801 · directivas de Jefatura)."},
+{c:"C2",tag:"C2·Demora",q:"Después del alta médica no hay móvil. El jefe de guardia ordena: \"Traelo un rato a la oficina hasta que se libere un patrullero\". ¿Cómo procede?",
+ o:["Cumple la orden, porque la oficina está separada de los detenidos.","No lo ingresa a la dependencia: gestiona el traslado al CAD y deja constancia de la demora, sus motivos y las horas.","Cumple la orden durante no más de dos horas y lo anota en el libro de guardia.","Lo ingresa solo si los padres lo autorizan por escrito."],k:1,
+ e:"Está prohibido alojar adolescentes en comisarías o dependencias policiales, aunque sea por un rato (art. 402 inc. 9 CPP · art. 5 inc. k Ley 27.801). El sumariante documenta la demora."},
+{c:"C2",tag:"C2·Edad acreditada",q:"Por la mañana llega la partida de nacimiento: cumplió 18 años dos meses antes del hecho. ¿Qué corresponde?",
+ o:["Seguir con el régimen juvenil, porque ya se inició así.","Archivar lo actuado y empezar todo de nuevo.","Desde que la edad se acredita, rige el régimen de adultos. Asienta cómo y cuándo se acreditó y comunica la rectificación al MPF y a los organismos ya avisados.","Esperar a que el juez de menores decida qué régimen aplicar."],k:2,
+ e:"El régimen lo define la edad al momento del hecho (arts. 1 y 2 Ley 27.801 · art. 393 CPP). La presunción de minoridad cede cuando la edad se acredita; lo actuado hasta ahí fue correcto y se informa la rectificación."},
+{c:"C3",tag:"C3·Género",q:"En el lugar solo hay dos efectivos varones. ¿Qué dispone usted?",
+ o:["Pedir personal femenino para la requisa, la custodia, el traslado y el ingreso al CAD.","Que la requisen los varones con un testigo y dejar constancia.","Que la madre haga la requisa en el lugar.","Trasladarla igual y dejar constancia de que no había personal femenino."],k:0,
  e:"Trato diferenciado con perspectiva de género en cada etapa: requisa, custodia, traslado e ingreso al CAD con personal femenino (art. 395 CPP · art. 5 incs. f y g Ley 27.801)."},
-{tag:"Ingreso al CAD",q:"¿Con qué debe ingresar el adolescente al CAD?",
- o:["Con el acta de aprehensión y cualquier efectivo disponible; el CAD gestiona el examen médico.","Con personal del mismo sexo, el pedido y el informe médico del centro asistencial y el número de identificación de la causa.","Con sus padres y el defensor; el personal policial no ingresa.","Con el informe médico y la autorización escrita del juez de menores."],c:1,
- e:"Ingresa acompañado por personal del mismo sexo, con el pedido y el informe médico del centro asistencial público y el número de identificación de la causa. Lo recibe el coordinador del CAD (directivas de Jefatura)."},
-{tag:"Secuestros",q:"Se secuestran el celular robado y un cuchillo. La víctima pide que le devuelvan su teléfono en el lugar. ¿Qué hace el oficial?",
- o:["Le devuelve el celular en el lugar con un acta de entrega, porque es la propietaria.","Guarda los objetos en la dependencia hasta que el fiscal los pida.","Acta de secuestro con cadena de custodia y entrega inmediata al MPF; la devolución solo con orden del fiscal.","Entrega los objetos en el CAD junto con el adolescente."],c:2,
- e:"Los secuestros se documentan con acta y cadena de custodia, y el oficial los entrega de inmediato al MPF. La devolución a la víctima solo se hace con orden del fiscal (directivas de Jefatura)."},
-{tag:"20:05 · Vía pública",q:"Un vecino filma el procedimiento y un compañero quiere sacarle una foto al adolescente \"para tenerlo identificado en el grupo de la comisaría\". ¿Qué corresponde?",
- o:["Permitir la foto, porque es de uso interno y no se publica.","Permitir la foto solo si se le tapa el rostro con un emoji antes de enviarla.","Prohibir solo la filmación del vecino, porque es un particular.","Prohibir la foto, proteger el rostro del adolescente y advertir al vecino que está prohibido difundir su imagen."],c:3,
+{c:"C3",tag:"C3·Imagen",q:"Un compañero le muestra una foto de la adolescente que ya circula en el grupo de WhatsApp de la comisaría \"para tenerla identificada\". ¿Qué hace?",
+ o:["Nada, porque es un grupo interno y la foto no se publica.","Pide que le tapen la cara antes de reenviarla.","Ordena eliminarla y no reenviarla, informa a la superioridad y cuida que ningún dato que la identifique salga del proceso. También advierte al vecino que filmó que no puede difundir su imagen.","La agrega a las actuaciones como prueba de identificación."],k:2,
  e:"Está prohibido fotografiar o difundir nombre, imagen o cualquier dato que identifique al adolescente, por cualquier medio, incluidos los grupos internos (art. 5 inc. i Ley 27.801 · Ley 20.056)."},
-{tag:"En el lugar",q:"La víctima exige que los padres del adolescente le paguen el celular roto en ese momento, y los padres aceptan. ¿Cómo procede el personal?",
- o:["Labra un acta de acuerdo y deja sin efecto el procedimiento.","Separa a las partes, explica que la policía no media ni cobra, y que el reclamo es por vía civil, donde responden los padres. Asienta los daños.","Permite el pago y deja constancia para que la víctima no presente denuncia.","Organiza una mediación en la dependencia con la presencia de ambas familias."],c:1,
- e:"La policía no media ni cobra. La víctima no reclama dinero en el proceso penal (art. 396 CPP); lo hace por vía civil, donde responden los padres (art. 7 Ley 27.801)."},
-{tag:"Denuncia",q:"Al hacer la denuncia, la víctima dice que no quiere ningún acuerdo ni mediación con el adolescente. ¿Qué es correcto?",
- o:["Sin el consentimiento de la víctima no hay mediación. Se asienta su posición y se informa al fiscal.","El fiscal puede imponer la mediación igual si el delito es leve.","El juez puede ordenar la mediación aunque la víctima se oponga.","La policía puede proponer un acuerdo informal para evitar el proceso."],c:0,
+{c:"C3",tag:"C3·Reclamo",q:"Llegan los padres y el comerciante les exige que le paguen la mercadería en ese momento. Los padres aceptan. ¿Qué hace usted?",
+ o:["Labra un acta de acuerdo y da por terminado el procedimiento.","Permite el pago y deja constancia para que no haya denuncia.","Organiza una mediación en la dependencia con las dos familias.","Explica que la policía no media ni cobra y que el reclamo económico va por vía civil, donde responden los padres. Asienta los daños y sigue con las actuaciones."],k:3,
+ e:"La policía no media ni cobra. La víctima no reclama dinero en el proceso penal (art. 396 CPP): lo hace por vía civil, donde responden los padres (art. 7 Ley 27.801)."},
+{c:"C3",tag:"C3·Víctima",q:"Al tomarle la denuncia, el comerciante dice que no quiere ningún acuerdo ni mediación con la adolescente. ¿Qué asienta?",
+ o:["Su posición, textual, y lo informa al fiscal: sin el consentimiento de la víctima no hay mediación.","Nada, porque la decisión es del juez.","Que igual puede haber mediación si el fiscal lo propone, porque el delito es leve.","Le propone un arreglo informal para evitar el proceso."],k:0,
  e:"La mediación requiere el consentimiento de la víctima, y el fiscal puede oponerse (art. 401 CPP). La víctima es oída antes de las decisiones importantes (art. 396 CPP)."},
-{tag:"22:50 · Banda",q:"Aprehenden juntos a un hombre de 25 años y a un adolescente de 16 por el mismo robo. ¿Qué afirmación es correcta?",
- o:["Se trasladan juntos en el mismo móvil, con custodia reforzada.","Ambos van a la comisaría, en celdas separadas.","El adolescente pasa a la justicia de adultos porque el hecho fue con un mayor.","Separación absoluta: el adulto sigue el circuito de adultos y el adolescente la ruta al CAD. La participación del adulto se deja asentada."],c:3,
- e:"Separación física absoluta (art. 5 inc. k Ley 27.801). La participación del adulto agrava su situación (art. 41 quater CP). El Juez de NNyA interviene aunque participe un adulto (art. 60 LOPJ)."},
-{tag:"Medida vigente",q:"Un adolescente con tobillera electrónica y prohibición de acercarse a la víctima es encontrado frente a la casa de ella. ¿Qué corresponde?",
- o:["Alojarlo en la comisaría hasta la audiencia de revocación.","Una advertencia verbal, porque no cometió un delito nuevo.","Verificar la orden, labrar acta del incumplimiento y comunicar al supervisor asignado, que informa al juez, y al MPF.","Trasladarlo directamente al instituto especializado."],c:2,
- e:"Ante un incumplimiento se labra acta y se comunica al supervisor asignado (que informa al juez) y al MPF. Solo el juez decide si se modifica la medida (arts. 16, 21 y 23 Ley 27.801 · arts. 5, 11 y 12 Ley 10.011)."},
-{tag:"Capacitación",q:"Un cadete pregunta cómo funciona el supervisor y el PITP. ¿Qué respuesta es correcta?",
- o:["El supervisor lo designa el jefe de la comisaría y el PITP se arma al momento de la aprehensión.","La Corte Suprema nombra al supervisor y el Juez de Menores lo asigna al caso. El PITP se arma solo cuando el adolescente es condenado.","El fiscal designa al supervisor y arma el PITP durante la investigación.","El coordinador del CAD designa al supervisor y define el PITP en 15 días."],c:1,
- e:"Los supervisores integran un cuerpo del Poder Judicial nombrado por la Corte; el Juez de Menores los asigna a cada caso (arts. 8 a 10 Ley 10.011). El PITP se arma solo con el adolescente condenado, en 30 días hábiles (art. 30 Ley 10.011)."},
-{tag:"Al cierre",q:"El acta del procedimiento dice: \"Se procedió a la aprehensión del menor, quien manifestó haber robado el celular\". ¿Cuál es el problema?",
- o:["Ninguno, siempre que la firmen dos testigos.","Solo falta la firma del padre o tutor.","Ninguno, porque es breve y concreta.","Incluye dichos del adolescente y omite horas, avisos, derechos informados, examen médico y secuestros. La causa puede caer."],c:3,
- e:"Todo queda en acta: horas, avisos y destinatarios, derechos informados, examen médico, secuestros e ingreso al CAD. Nunca se asientan dichos del adolescente sobre el hecho (art. 5 inc. c Ley 27.801)."},
-{tag:"03:20 · Ruta 9",q:"El adolescente aprehendido presenta signos de intoxicación severa: no responde bien y respira con dificultad. ¿Qué corresponde?",
- o:["Prioridad médica: 107 o centro asistencial, custodia sin interferir y comunicaciones. Al CAD solo con el alta médica.","Llevarlo a la comisaría hasta que se le pase el efecto, para luego trasladarlo.","Llevarlo directo al CAD, porque allí hay profesionales que lo pueden atender.","Esposarlo para evitar que se lastime, aunque dificulte su respiración."],c:0,
- e:"Ante una intoxicación, primero la salud: 107 o centro asistencial público, custodia sin obstaculizar la atención, y al CAD con el alta médica (arts. 5 inc. b y 35 Ley 27.801)."}
+{c:"C3",tag:"C3·Médico y CAD",q:"Los padres se retiraron, pero llegó el defensor. ¿Cómo completa usted el examen médico y el ingreso al CAD?",
+ o:["Examen con el médico policial en la dependencia e ingreso al CAD con cualquier efectivo.","Examen en el centro asistencial público con pedido médico, en presencia del defensor. Ingreso al CAD con personal femenino, el pedido y el informe médico, y el número de identificación de la causa.","Se omite el examen si no hay lesiones visibles, para no demorar el ingreso.","Se espera a los padres en la dependencia para hacer el examen."],k:1,
+ e:"Examen en el centro asistencial público con pedido médico, acompañado de los padres o del defensor. Ingreso al CAD con personal del mismo sexo, informe médico y número de la causa; lo recibe el coordinador (directivas de Jefatura)."},
+{c:"C4",tag:"C4·Orden de detención",q:"Llega una orden de detención contra un joven que hoy tiene 18 años, por un robo que cometió a los 17. ¿Cómo la cumple y documenta?",
+ o:["Como adulto, porque hoy es mayor de edad.","Como adulto, salvo que el juez diga lo contrario por escrito.","Con el régimen penal juvenil, porque cuenta la edad del hecho. En el acta asienta la fecha de nacimiento y la fecha del hecho.","Con un régimen mixto: adultos para el alojamiento, juvenil para el proceso."],k:2,
+ e:"La edad que define el régimen es la del momento del hecho (arts. 1 y 2 Ley 27.801 · art. 393 CPP)."},
+{c:"C4",tag:"C4·Medida incumplida",q:"Un adolescente con tobillera electrónica y prohibición de acercarse a la víctima es encontrado frente a la casa de ella. ¿Qué hace usted?",
+ o:["Lo aloja en la comisaría hasta la audiencia de revocación.","Le hace una advertencia verbal, porque no cometió un delito nuevo.","Verifica la orden, labra acta del incumplimiento y lo comunica al supervisor asignado (que informa al juez) y al MPF. Solo el juez decide si cambia la medida.","Lo traslada directamente al instituto especializado."],k:2,
+ e:"Ante un incumplimiento: acta y comunicación al supervisor asignado (informa al juez) y al MPF; solo el juez modifica la medida (arts. 16, 21 y 23 Ley 27.801 · arts. 5, 11 y 12 Ley 10.011)."},
+{c:"C4",tag:"C4·Supervisor y PITP",q:"Un supervisor pide información sobre un adolescente y un oficial nuevo pregunta quién es y qué es el PITP. ¿Qué le responde usted?",
+ o:["El supervisor lo designa el jefe de la comisaría y el PITP se arma al aprehender.","El fiscal designa al supervisor y arma el PITP durante la investigación.","El coordinador del CAD designa al supervisor y define el PITP en 15 días.","Los supervisores son un cuerpo del Poder Judicial nombrado por la Corte, y el Juez de Menores los asigna a cada caso. El PITP se arma solo con el adolescente condenado, en 30 días hábiles."],k:3,
+ e:"Arts. 8 a 10 Ley 10.011 (supervisores) y art. 30 Ley 10.011 (PITP)."},
+{c:"C4",tag:"C4·Menor de 14",q:"En un robo participan un chico de 13 años y otro de 16. ¿Cómo encuadra usted las actuaciones?",
+ o:["El de 13 no es punible, pero el hecho se investiga: intervención del fiscal y de protección de derechos. El de 16 sigue la ruta del proceso penal juvenil.","Los dos siguen la ruta del adolescente al CAD.","Al de 13 se lo entrega a los padres sin actuaciones; el de 16 queda en la comisaría.","Ninguno es punible si no participó un adulto."],k:0,
+ e:"Los menores de 14 quedan fuera del régimen penal (art. 1 Ley 27.801), pero el hecho se investiga y se da intervención al fiscal y a la protección de derechos."},
+{c:"C4",tag:"C4·Elevación",q:"Antes de elevar las actuaciones de un adolescente, ¿qué debe controlar usted que conste?",
+ o:["Solo el acta de aprehensión firmada por dos testigos.","El acta y la firma de los padres.","Horas, avisos y destinatarios, derechos informados, examen médico, secuestros con cadena de custodia e ingreso al CAD, sin dichos del adolescente sobre el hecho ni datos que lo expongan.","Un resumen breve del hecho, para no exponer al adolescente."],k:2,
+ e:"Todo queda en acta: horas, avisos, derechos, examen médico, secuestros e ingreso al CAD. Nunca dichos del adolescente sobre el hecho (art. 5 inc. c Ley 27.801). Si falta algo, la causa puede caer."}
 ];
 
 const L="ABCD", $=id=>document.getElementById(id);
 let exam=[], cur=0, chosen=null, scorePoints=0, violationsCount=0, results=[], running=false, locked=false;
 
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function prep(){ // orden de preguntas y de opciones aleatorio por cada evaluado
-  exam=shuffle(questions).map((q,i)=>{const idx=shuffle([0,1,2,3]);return{n:i+1,tag:q.tag,q:q.q,options:idx.map(k=>q.o[k]),correct:idx.indexOf(q.c),exp:q.e}});
+function prep(){ // casos y momentos en orden (la historia avanza); opciones mezcladas por evaluado
+  exam=questions.map((q,i)=>{const idx=shuffle([0,1,2,3]);return{n:i+1,c:q.c,tag:q.tag,q:q.q,options:idx.map(k=>q.o[k]),correct:idx.indexOf(q.k),exp:q.e}});
 }
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
 function fs(){const d=document.documentElement;try{(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
@@ -232,9 +238,10 @@ $('btnStart').onclick=()=>{
 
 function renderQuestion(i){
   cur=i; chosen=null; $('btnNext').disabled=true; const q=exam[i];
-  $('stepCounter').textContent=`Situación ${i+1} de ${exam.length}`;
+  $('stepCounter').textContent=`Decisión ${i+1} de ${exam.length}`;
+  $('casoT').textContent=CASOS[q.c].t; $('casoR').textContent=CASOS[q.c].r;
   $('progress').style.width=(i/exam.length*100)+'%';
-  $('sceneTag').textContent=q.tag; $('questionText').textContent=q.q;
+  $('sceneTag').textContent='Momento '+(questions.filter(x=>x.c===q.c).findIndex(x=>x.tag===q.tag)+1)+' · '+q.tag.split('·')[1]; $('questionText').textContent=q.q;
   const c=$('optionsContainer'); c.innerHTML='';
   q.options.forEach((t,k)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<span class="k">${L[k]}</span><span></span>`;b.lastChild.textContent=t;
     b.onclick=()=>{chosen=k;c.querySelectorAll('.opt').forEach((o,j)=>o.classList.toggle('sel',j===k));$('btnNext').disabled=false};c.appendChild(b)});
@@ -268,9 +275,9 @@ async function finishExam(){
   const col=finalScore>=7?'var(--em)':finalScore>=5?'var(--am)':'var(--co)';
   $('ring').style.setProperty('--p',scorePoints/n*100);$('ring').style.setProperty('--c',col);
   $('scoreDisplay').textContent=nota.replace('.',',');$('scoreDisplay').style.color=col;
-  $('verdict').textContent=finalScore>=7?'Sabe aplicar la ley':finalScore>=5?'Aplicación parcial':'Necesita reforzar el protocolo';
-  $('scoreDetails').textContent=`${scorePoints} de ${n} situaciones resueltas correctamente`+(violationsCount?` · ${violationsCount} salida(s) sancionada(s).`:'.');
-  $('feedbackContainer').innerHTML=results.map((r,i)=>`<div class="fbi ${r.ok?'':'bad'}"><h4>${i+1}. ${esc(r.q.q)}</h4>
+  $('verdict').textContent=finalScore>=7?'Conduce la causa conforme a la ley':finalScore>=5?'Conducción parcial de la causa':'Necesita reforzar el protocolo';
+  $('scoreDetails').textContent=`${scorePoints} de ${n} decisiones correctas`+(violationsCount?` · ${violationsCount} salida(s) sancionada(s).`:'.');
+  $('feedbackContainer').innerHTML=results.map((r,i)=>`<div class="fbi ${r.ok?'':'bad'}"><div class="cs">${esc(CASOS[r.q.c].t)}</div><h4>${i+1}. ${esc(r.q.q)}</h4>
     <p class="${r.ok?'ok':'no'}">Tu respuesta: ${esc(r.userAnswer)}</p>${r.ok?'':`<p class="ok">Correcta: ${esc(r.correctAnswer)}</p>`}<p class="ex">${esc(r.q.exp)}</p></div>`).join('');
   const payload={
     fecha:new Date().toLocaleString("es-AR",{timeZone:"America/Argentina/Tucuman"}),
